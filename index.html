@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Dashboard de Treino em Casa</title>
     
+    <!-- Ícone de Halter na Aba do Navegador (Favicon) -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏋️‍♂️</text></svg>">
+    
+    <!-- Carrega a biblioteca oficial do Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
         :root {
@@ -201,7 +205,7 @@
             transform: translateY(-2px);
         }
 
-        /* Seção do Diário e Controles de Backup */
+        /* Seção do Diário e Controles */
         .diary-section {
             background: white;
             border-radius: 12px;
@@ -220,27 +224,40 @@
             gap: 10px;
         }
 
-        .backup-controls {
+        .month-navigation {
             display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
         }
 
-        .btn-utility {
+        .nav-btn {
             background: #e2e8f0;
-            color: var(--dark);
             border: none;
             padding: 6px 12px;
             border-radius: 6px;
-            font-size: 0.85em;
-            font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
+            font-weight: bold;
+            font-size: 1em;
         }
 
-        .btn-utility:hover { background: #cbd5e1; }
-        .btn-utility.danger { color: white; background-color: var(--danger); }
-        .btn-utility.danger:hover { background-color: #b91c1c; }
+        .nav-btn:hover { background: #cbd5e1; }
+
+        .month-title {
+            margin: 0;
+            font-size: 1.2em;
+            min-width: 140px;
+            text-align: center;
+            text-transform: capitalize;
+        }
+
+        .status-cloud {
+            font-size: 0.85em;
+            color: var(--secondary);
+            font-weight: 600;
+            background: #f1f5f9;
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
 
         .calendar-grid {
             display: grid;
@@ -279,8 +296,6 @@
         .calendar-day.today {
             border: 2px dashed var(--primary);
         }
-
-        #fileInput { display: none; }
     </style>
 </head>
 <body>
@@ -288,7 +303,7 @@
 <div class="container">
     <header>
         <h1>🏋️‍♂️ Monitor de Treino em Casa</h1>
-        <p>Hipertrofia & Emagrecimento Consciente</p>
+        <p>Sincronizado na Nuvem com Supabase</p>
     </header>
 
     <div class="meta-info">
@@ -298,10 +313,11 @@
         </div>
         <div class="meta-card">
             <strong>🎒 Equipamentos Atuais:</strong><br>
-            <small>Barra Longa e Halteres Montáveis.</small>
+            <small>Barra Longa (image_1ab37d.png) e Halteres Montáveis (image_1ab34g.png).</small>
         </div>
     </div>
 
+    <!-- Abas -->
     <div class="tabs">
         <button class="tab-btn active" onclick="switchDay('terca')">Terça (Empurrar)</button>
         <button class="tab-btn" onclick="switchDay('quarta')">Quarta (Pernas)</button>
@@ -309,10 +325,12 @@
         <button class="tab-btn" onclick="switchDay('sexta')">Sexta (Metabólico)</button>
     </div>
 
+    <!-- Progresso -->
     <div class="progress-container">
         <div class="progress-bar" id="progressBar"></div>
     </div>
 
+    <!-- TERÇA -->
     <div id="terca" class="workout-card active">
         <h2>💪 Terça - Peito, Ombro e Tríceps</h2>
         <ul class="exercise-list">
@@ -349,9 +367,10 @@
                 <a href="https://www.youtube.com/results?search_query=triceps+testa+com+barra" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
         </ul>
-        <div class="action-area"><button class="save-btn" onclick="saveProgress('Terça')">✅ Salvar Treino de Hoje</button></div>
+        <div class="action-area"><button class="save-btn" onclick="saveProgress('Terça')">☁️ Salvar Treino na Nuvem</button></div>
     </div>
 
+    <!-- QUARTA -->
     <div id="quarta" class="workout-card">
         <h2>🦵 Quarta - Pernas, Glúteos e Panturrilhas</h2>
         <ul class="exercise-list">
@@ -388,9 +407,10 @@
                 <a href="https://www.youtube.com/results?search_query=panturrilha+em+pe+com+barra" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
         </ul>
-        <div class="action-area"><button class="save-btn" onclick="saveProgress('Quarta')">✅ Salvar Treino de Hoje</button></div>
+        <div class="action-area"><button class="save-btn" onclick="saveProgress('Quarta')">☁️ Salvar Treino na Nuvem</button></div>
     </div>
 
+    <!-- QUINTA -->
     <div id="quinta" class="workout-card">
         <h2>💪 Quinta - Costas, Bíceps e Abdômen</h2>
         <ul class="exercise-list">
@@ -427,9 +447,10 @@
                 <a href="https://www.youtube.com/results?search_query=abdominal+supra+solo" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
         </ul>
-        <div class="action-area"><button class="save-btn" onclick="saveProgress('Quinta')">✅ Salvar Treino de Hoje</button></div>
+        <div class="action-area"><button class="save-btn" onclick="saveProgress('Quinta')">☁️ Salvar Treino na Nuvem</button></div>
     </div>
 
+    <!-- SEXTA -->
     <div id="sexta" class="workout-card">
         <h2>🔥 Sexta - Queima Calórica Completa (Full Body)</h2>
         <ul class="exercise-list">
@@ -466,138 +487,120 @@
                 <a href="https://www.youtube.com/results?search_query=prancha+abdominal+isometria" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
         </ul>
-        <div class="action-area"><button class="save-btn" onclick="saveProgress('Sexta')">✅ Salvar Treino de Hoje</button></div>
+        <div class="action-area"><button class="save-btn" onclick="saveProgress('Sexta')">☁️ Salvar Treino na Nuvem</button></div>
     </div>
 
+    <!-- CALENDÁRIO COM NAVEGAÇÃO DE MESES -->
     <div class="diary-section">
         <div class="diary-header">
-            <h3 style="margin: 0;">📅 Histórico Mensal</h3>
-            <div class="backup-controls">
-                <button class="btn-utility" onclick="exportBackup()">📤 Exportar Backup</button>
-                <button class="btn-utility" onclick="document.getElementById('fileInput').click()">📥 Importar Backup</button>
-                <button class="btn-utility danger" onclick="clearHistory()">❌ Limpar</button>
-                <input type="file" id="fileInput" accept=".json" onchange="importBackup(event)">
+            <div class="month-navigation">
+                <button class="nav-btn" onclick="changeMonth(-1)">◀</button>
+                <h3 class="month-title" id="monthDisplay">Mês Ano</h3>
+                <button class="nav-btn" onclick="changeMonth(1)">▶</button>
             </div>
+            <div class="status-cloud" id="syncStatus">🔄 Carregando nuvem...</div>
         </div>
         <div class="calendar-grid" id="calendarGrid"></div>
     </div>
 </div>
 
 <script>
+    // Configurações do seu banco de dados
+    const SUPABASE_URL = "https://znpeniqeagmeztwsuwbk.supabase.co"; 
+    const SUPABASE_KEY = "sb_publishable_2VWFh2oe_n6xg9Xo_TIHIQ_W_CJPO0J"; 
+    
+    // Conexão oficial estável
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    let currentCalendarDate = new Date();
+    let cacheTrainedDays = [];
+
     function switchDay(dayId) {
         document.querySelectorAll('.workout-card').forEach(card => card.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        
         document.getElementById(dayId).classList.add('active');
         event.currentTarget.classList.add('active');
-        
         updateProgressBar(dayId);
     }
 
     function toggleExercise(id) {
         const item = document.getElementById(id);
         const checkbox = item.querySelector('input[type="checkbox"]');
-        
         if (event.target.type !== 'checkbox' && event.target.tagName !== 'A') {
             checkbox.checked = !checkbox.checked;
         }
+        if (checkbox.checked) item.classList.add('completed');
+        else item.classList.remove('completed');
         
-        if (checkbox.checked) {
-            item.classList.add('completed');
-        } else {
-            item.classList.remove('completed');
-        }
-
-        const activeCard = item.closest('.workout-card');
-        updateProgressBar(activeCard.id);
+        updateProgressBar(item.closest('.workout-card').id);
     }
 
     function updateProgressBar(dayId) {
         const card = document.getElementById(dayId);
         const total = card.querySelectorAll('.exercise-item').length;
         const checked = card.querySelectorAll('input[type="checkbox"]:checked').length;
-        const percentage = total > 0 ? (checked / total) * 100 : 0;
-        
-        document.getElementById('progressBar').style.width = percentage + '%';
+        document.getElementById('progressBar').style.width = total > 0 ? (checked / total) * 100 + '%' : '0%';
     }
 
-    // --- SISTEMA DO DIÁRIO & BACKUP ---
-    
-    function getTrainedDays() {
-        const saved = localStorage.getItem('gym_trained_days');
-        return saved ? JSON.parse(saved) : [];
-    }
+    // --- CONEXÃO COM O SUPABASE ---
 
-    function saveProgress(dayName) {
-        const todayStr = new Date().toISOString().split('T')[0];
-        let trainedDays = getTrainedDays();
+    async function fetchTrainedDays() {
+        document.getElementById('syncStatus').innerText = "🔄 Sincronizando...";
+        try {
+            const { data, error } = await supabase
+                .from('treinos_concluidos')
+                .select('data_treino');
 
-        if (!trainedDays.includes(todayStr)) {
-            trainedDays.push(todayStr);
-            localStorage.setItem('gym_trained_days', JSON.stringify(trainedDays));
-            alert(`Parabéns! Treino de ${dayName} registrado no seu calendário! 🔥`);
+            if (error) throw error;
+
+            cacheTrainedDays = data.map(item => item.data_treino);
+            document.getElementById('syncStatus').innerText = "🟢 Nuvem Ativa";
             renderCalendar();
-        } else {
-            alert("Você já registrou o treino de hoje!");
+        } catch (err) {
+            console.error(err);
+            document.getElementById('syncStatus').innerText = "🔴 Erro de Conexão";
         }
     }
 
-    function clearHistory() {
-        if(confirm("Tem certeza que deseja zerar seu histórico de treinos?")) {
-            localStorage.removeItem('gym_trained_days');
-            renderCalendar();
-        }
-    }
+    async function saveProgress(dayName) {
+        const today = new Date();
+        const todayStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
 
-    function exportBackup() {
-        const trainedDays = getTrainedDays();
-        if (trainedDays.length === 0) {
-            alert("Você ainda não tem histórico para exportar!");
+        if (cacheTrainedDays.includes(todayStr)) {
+            alert("Você já salvou o treino de hoje na nuvem!");
             return;
         }
-        
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(trainedDays));
-        const downloadAnchor = document.createElement('a');
-        downloadAnchor.setAttribute("href", dataStr);
-        downloadAnchor.setAttribute("download", `backup_treinos_${new Date().toISOString().split('T')[0]}.json`);
-        document.body.appendChild(downloadAnchor);
-        downloadAnchor.click();
-        downloadAnchor.remove();
+
+        document.getElementById('syncStatus').innerText = "📤 Salvando...";
+        try {
+            const { error } = await supabase
+                .from('treinos_concluidos')
+                .insert([{ data_treino: todayStr }]);
+
+            if (error) throw error;
+
+            alert(`Excelente! Treino de ${dayName} salvo com sucesso na nuvem! 🚀`);
+            fetchTrainedDays();
+        } catch (err) {
+            alert("Erro ao salvar! Certifique-se de que rodou o comando SQL no painel do Supabase para criar a tabela.");
+            console.error(err);
+        }
     }
 
-    function importBackup(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            try {
-                const importedData = JSON.parse(e.target.result);
-                if (Array.isArray(importedData)) {
-                    const currentData = getTrainedDays();
-                    const combinedData = [...new Set([...currentData, ...importedData])];
-                    
-                    localStorage.setItem('gym_trained_days', JSON.stringify(combinedData));
-                    alert("Backup importado com sucesso! Seu histórico foi atualizado. 🔄");
-                    renderCalendar();
-                } else {
-                    alert("Formato de arquivo inválido.");
-                }
-            } catch (err) {
-                alert("Erro ao ler o arquivo de backup.");
-            }
-        };
-        reader.readAsText(file);
-        event.target.value = '';
+    function changeMonth(direction) {
+        currentCalendarDate.setMonth(currentCalendarDate.getMonth() + direction);
+        renderCalendar();
     }
 
     function renderCalendar() {
         const grid = document.getElementById('calendarGrid');
         grid.innerHTML = '';
 
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = now.getMonth();
+        const year = currentCalendarDate.getFullYear();
+        const month = currentCalendarDate.getMonth();
+
+        const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+        document.getElementById('monthDisplay').innerText = `${monthNames[month]} ${year}`;
 
         const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
         daysOfWeek.forEach(day => {
@@ -609,12 +612,12 @@
 
         const firstDayOfMonth = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
-        const trainedDays = getTrainedDays();
-        const todayStr = now.toISOString().split('T')[0];
+        
+        const realToday = new Date();
+        const realTodayStr = realToday.getFullYear() + '-' + String(realToday.getMonth() + 1).padStart(2, '0') + '-' + String(realToday.getDate()).padStart(2, '0');
 
         for (let i = 0; i < firstDayOfMonth; i++) {
-            const emptyCell = document.createElement('div');
-            grid.appendChild(emptyCell);
+            grid.appendChild(document.createElement('div'));
         }
 
         for (let day = 1; day <= daysInMonth; day++) {
@@ -626,12 +629,12 @@
             const currentDayStr = String(day).padStart(2, '0');
             const dateKey = `${year}-${currentMonthStr}-${currentDayStr}`;
 
-            if (trainedDays.includes(dateKey)) {
+            if (cacheTrainedDays.includes(dateKey)) {
                 dayCell.classList.add('trained');
                 dayCell.innerText = day + " 🔥";
             }
 
-            if (dateKey === todayStr) {
+            if (dateKey === realTodayStr) {
                 dayCell.classList.add('today');
             }
 
@@ -640,7 +643,7 @@
     }
 
     window.onload = function() {
-        renderCalendar();
+        fetchTrainedDays();
     };
 </script>
 </body>
