@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Dashboard de Treino em Casa</title>
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏋️‍♂️</text></svg>">
+    
     <style>
         :root {
             --primary: #2563eb;
@@ -295,11 +298,10 @@
         </div>
         <div class="meta-card">
             <strong>🎒 Equipamentos Atuais:</strong><br>
-            <small>Barra Longa (image_1ab37d.png) e Halteres (image_1ab34g.png).</small>
+            <small>Barra Longa e Halteres Montáveis.</small>
         </div>
     </div>
 
-    <!-- Abas dos Dias da Semana -->
     <div class="tabs">
         <button class="tab-btn active" onclick="switchDay('terca')">Terça (Empurrar)</button>
         <button class="tab-btn" onclick="switchDay('quarta')">Quarta (Pernas)</button>
@@ -307,12 +309,10 @@
         <button class="tab-btn" onclick="switchDay('sexta')">Sexta (Metabólico)</button>
     </div>
 
-    <!-- Progresso do Dia -->
     <div class="progress-container">
         <div class="progress-bar" id="progressBar"></div>
     </div>
 
-    <!-- TERÇA -->
     <div id="terca" class="workout-card active">
         <h2>💪 Terça - Peito, Ombro e Tríceps</h2>
         <ul class="exercise-list">
@@ -352,7 +352,6 @@
         <div class="action-area"><button class="save-btn" onclick="saveProgress('Terça')">✅ Salvar Treino de Hoje</button></div>
     </div>
 
-    <!-- QUARTA -->
     <div id="quarta" class="workout-card">
         <h2>🦵 Quarta - Pernas, Glúteos e Panturrilhas</h2>
         <ul class="exercise-list">
@@ -392,7 +391,6 @@
         <div class="action-area"><button class="save-btn" onclick="saveProgress('Quarta')">✅ Salvar Treino de Hoje</button></div>
     </div>
 
-    <!-- QUINTA -->
     <div id="quinta" class="workout-card">
         <h2>💪 Quinta - Costas, Bíceps e Abdômen</h2>
         <ul class="exercise-list">
@@ -432,7 +430,6 @@
         <div class="action-area"><button class="save-btn" onclick="saveProgress('Quinta')">✅ Salvar Treino de Hoje</button></div>
     </div>
 
-    <!-- SEXTA -->
     <div id="sexta" class="workout-card">
         <h2>🔥 Sexta - Queima Calórica Completa (Full Body)</h2>
         <ul class="exercise-list">
@@ -472,7 +469,6 @@
         <div class="action-area"><button class="save-btn" onclick="saveProgress('Sexta')">✅ Salvar Treino de Hoje</button></div>
     </div>
 
-    <!-- SEÇÃO DO DIÁRIO / CALENDÁRIO -->
     <div class="diary-section">
         <div class="diary-header">
             <h3 style="margin: 0;">📅 Histórico Mensal</h3>
@@ -553,7 +549,6 @@
         }
     }
 
-    // EXPORTAR BACKUP (Gera arquivo .json)
     function exportBackup() {
         const trainedDays = getTrainedDays();
         if (trainedDays.length === 0) {
@@ -570,7 +565,6 @@
         downloadAnchor.remove();
     }
 
-    // IMPORTAR BACKUP (Lê arquivo .json)
     function importBackup(event) {
         const file = event.target.files[0];
         if (!file) return;
@@ -580,7 +574,6 @@
             try {
                 const importedData = JSON.parse(e.target.result);
                 if (Array.isArray(importedData)) {
-                    // Mescla o histórico importado com o atual tirando duplicados
                     const currentData = getTrainedDays();
                     const combinedData = [...new Set([...currentData, ...importedData])];
                     
@@ -595,7 +588,7 @@
             }
         };
         reader.readAsText(file);
-        event.target.value = ''; // Limpa o input
+        event.target.value = '';
     }
 
     function renderCalendar() {
