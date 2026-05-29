@@ -1,34 +1,524 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Dashboard de Treino em Casa</title>
+    
+    <!-- Ícone de Halter na Aba do Navegador (Favicon) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏋️‍♂️</text></svg>">
+    
+    <!-- Carrega a biblioteca oficial do Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --success: #10b981;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --secondary: #64748b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            color: white;
+            padding: 25px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .meta-info {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-card {
+            flex: 1;
+            min-width: 150px;
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 5px solid var(--primary);
+            font-size: 0.95em;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .meta-card.time { border-left-color: var(--accent); }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .tab-btn {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .workout-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: none;
+            margin-bottom: 25px;
+        }
+
+        .workout-card.active { display: block; }
+
+        .progress-container {
+            background: #e2e8f0;
+            border-radius: 10px;
+            height: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: var(--success);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .exercise-list {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #edf2f7;
+            transition: background 0.2s;
+        }
+
+        .exercise-item:hover { background-color: #f8fafc; }
+        .exercise-item:last-child { border-bottom: none; }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding-right: 15px;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+        }
+
+        .exercise-details { flex-grow: 1; }
+        .exercise-name { font-weight: bold; font-size: 1.1em; margin-bottom: 4px; }
+
+        .exercise-meta {
+            font-size: 0.9em;
+            color: #64748b;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: #f1f5f9;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .video-btn {
+            background: #fee2e2;
+            color: #dc2626;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85em;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .video-btn:hover { background: #fca5a5; }
+        .completed .exercise-name { text-decoration: line-through; color: #94a3b8; }
+
+        .action-area {
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .save-btn {
+            background-color: var(--success);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .save-btn:hover {
+            background-color: #059669;
+            transform: translateY(-2px);
+        }
+
+        /* Seção do Diário e Controles */
+        .diary-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .diary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .month-navigation {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background: #e2e8f0;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1em;
+        }
+
+        .nav-btn:hover { background: #cbd5e1; }
+
+        .month-title {
+            margin: 0;
+            font-size: 1.2em;
+            min-width: 140px;
+            text-align: center;
+            text-transform: capitalize;
+        }
+
+        .status-cloud {
+            font-size: 0.85em;
+            color: var(--secondary);
+            font-weight: 600;
+            background: #f1f5f9;
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            text-align: center;
+        }
+
+        .calendar-day-name {
+            font-weight: bold;
+            color: #64748b;
+            font-size: 0.9em;
+            padding-bottom: 5px;
+        }
+
+        .calendar-day {
+            background: #f1f5f9;
+            padding: 10px 0;
+            border-radius: 6px;
+            font-weight: 600;
+            position: relative;
+            font-size: 0.95em;
+        }
+
+        .calendar-day.active-month {
+            background: #e2e8f0;
+            color: var(--dark);
+        }
+
+        .calendar-day.trained {
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 2px solid var(--success);
+        }
+
+        .calendar-day.today {
+            border: 2px dashed var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>🏋️‍♂️ Monitor de Treino em Casa</h1>
+        <p>Sincronizado na Nuvem com Supabase</p>
+    </header>
+
+    <div class="meta-info">
+        <div class="meta-card time">
+            <strong>⏱️ Duração Alvo:</strong> 50 a 60 minutos<br>
+            <small>Descanso: 45s a 60s entre séries.</small>
+        </div>
+        <div class="meta-card">
+            <strong>🎒 Equipamentos Atuais:</strong><br>
+            <small>Barra Longa (image_1ab37d.png) e Halteres Montáveis (image_1ab34g.png).</small>
+        </div>
+    </div>
+
+    <!-- Abas -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchDay('terca')">Terça (Empurrar)</button>
+        <button class="tab-btn" onclick="switchDay('quarta')">Quarta (Pernas)</button>
+        <button class="tab-btn" onclick="switchDay('quinta')">Quinta (Puxar)</button>
+        <button class="tab-btn" onclick="switchDay('sexta')">Sexta (Metabólico)</button>
+    </div>
+
+    <!-- Progresso -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- TERÇA -->
+    <div id="terca" class="workout-card active">
+        <h2>💪 Terça - Peito, Ombro e Tríceps</h2>
+        <ul class="exercise-list">
+            <li class="exercise-item" id="t1">
+                <div class="checkbox-container" onclick="toggleExercise('t1')"><input type="checkbox"></div>
+                <div class="exercise-details">
+                    <div class="exercise-name">Supino Reto no Chão (Floor Press)</div>
+                    <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">10 a 12 Repetições</span><span>Barra Longa</span></div>
+                </div>
+                <a href="https://www.youtube.com/results?search_query=floor+press+com+barra+execucao" target="_blank" class="video-btn">▶ Vídeo</a>
+            </li>
+            <li class="exercise-item" id="t2">
+                <div class="checkbox-container" onclick="toggleExercise('t2')"><input type="checkbox"></div>
+                <div class="exercise-details">
+                    <div class="exercise-name">Desenvolvimento de Ombros em Pé</div>
+                    <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">10 Repetições</span><span>Halteres</span></div>
+                </div>
+                <a href="https://www.youtube.com/results?search_query=desenvolvimento+com+halter+em+pe" target="_blank" class="video-btn">▶ Vídeo</a>
+            </li>
+            <li class="exercise-item" id="t3">
+                <div class="checkbox-container" onclick="toggleExercise('t3')"><input type="checkbox"></div>
+                <div class="exercise-details">
+                    <div class="exercise-name">Elevação Lateral</div>
+                    <div class="exercise-meta"><span class="tag">3 Séries</span><span class="tag">12 a 15 Repetições</span><span>Halteres</span></div>
+                </div>
+                <a href="https://www.youtube.com/results?search_query=eleva%C3%A7%C3%A3o+lateral+halteres" target="_blank" class="video-btn">▶ Vídeo</a>
+            </li>
+            <li class="exercise-item" id="t4">
+                <div class="checkbox-container" onclick="toggleExercise('t4')"><input type="checkbox"></div>
+                <div class="exercise-details">
+                    <div class="exercise-name">Tríceps Testa deitado</div>
+                    <div class="exercise-meta"><span class="tag">3 Séries</span><span class="tag">12 Repetições</span><span>Barra Longa</span></div>
+                </div>
+                <a href="https://www.youtube.com/results?search_query=triceps+testa+com+barra" target="_blank" class="video-btn">▶ Vídeo</a>
+            </li>
+        </ul>
+        <div class="action-area"><button class="save-btn" onclick="saveProgress('Terça')">☁️ Salvar Treino na Nuvem</button></div>
+    </div>
+
+    <!-- QUARTA -->
+    <div id="quarta" class="workout-card">
+        <h2>🦵 Quarta - Pernas, Glúteos e Panturrilhas</h2>
+        <ul class="exercise-list">
+            <li class="exercise-item" id="q1">
+                <div class="checkbox-container" onclick="toggleExercise('q1')"><input type="checkbox"></div>
+                <div class="exercise-details">
+                    <div class="exercise-name">Agachamento Livre</div>
+                    <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">12 Repetições</span><span>Barra nas Costas</span></div>
+                </div>
+                <a href="https://www.youtube.com/results?search_query=agachamento+livre+com+barra" target="_blank" class="video-btn">▶ Vídeo</a>
+            </li>
+            <li class="exercise-item" id="q2">
+                <div class="checkbox-container" onclick="toggleExercise('q2')"><input type="checkbox"></div>
+                <div class="exercise-details">
+                    <div class="exercise-name">Avanço / Passada</div>
+                    <div class="exercise-meta"><span class="tag">3 Séries</span><span class="tag">10 Passos/perna</span><span>Halteres</span></div>
+                </div>
+                <a href="https://www.youtube.com/results?search_query=passada+com+halter" target="_blank" class="video-btn">▶ Vídeo</a>
+            </li>
+            <li class="exercise-item" id="q3">
+                <div class="checkbox-container" onclick="toggleExercise('q3')"><input type="checkbox"></div>
+                <div class="exercise-details">
+                    <div class="exercise-name">Stiff</div>
+                    <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">10 Repetições</span><span>Barra Longa</span></div>
+                </div>
+                <a href="https://www.youtube.com/results?search_query=stiff+com+barra+execucao" target="_blank" class="video-btn">▶ Vídeo</a>
+            </li>
+            <li class="exercise-item" id="q4">
+                <div class="checkbox-container" onclick="toggleExercise('q4')"><input type="checkbox"></div>
+                <div class="exercise-details">
+                    <div class="exercise-name">Gêmeos em Pé (Panturrilhas)</div>
+                    <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">20 Repetições</span><span>Barra em mãos</span></div>
+                </div>
+                <a href="https://www.youtube.com/results?search_query=panturrilha+em+pe+com+barra" target="_blank" class="video-btn">▶ Vídeo</a>
+            </li>
+        </ul>
+        <div class="action-area"><button class="save-btn" onclick="saveProgress('Quarta')">☁️ Salvar Treino na Nuvem</button></div>
+    </div>
+
+    <!-- QUINTA -->
+    <div id="quinta" class="workout-card">
+        <h2>💪 Quinta - Costas, Bíceps e Abdômen</h2>
+        <ul class="exercise-list">
+            <li class="exercise-item" id="qui1">
+                <div class="checkbox-container" onclick="toggleExercise('qui1')"><input type="checkbox"></div>
+                <div class="exercise-details">
+                    <div class="exercise-name">Remada Curvada</div>
+                    <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">10 Repetições</span><span>Barra Longa</span></div>
+                </div>
+                <a href="https://www.youtube.com/results?search_query=remada+curvada+com+barra" target="_blank" class="video-btn">▶ Vídeo</a>
+            </li>
+            <li class="exercise-item" id="qui2">
+                <div class="checkbox-container" onclick="toggleExercise('qui2')"><input type="checkbox"></div>
+                <div class="exercise-details">
+                    <div class="exercise-name">Remada Unilateral (Serrote)</div>
+                    <div class="exercise-meta"><span class="tag">3 Séries</span><span class="tag">12 Reps (cada lado)</span><span>1 Halter</span></div>
+                </div>
+                <a href="https://www.youtube.com/results?search_query=remada+unilateral+serrote" target="_blank" class="video-btn">▶ Vídeo</a>
+            </li>
+            <li class="exercise-item" id="qui3">
+                <div class="checkbox-container" onclick="toggleExercise('qui3')"><input type="checkbox"></div>
+                <div class="exercise-details">
+                    <div class="exercise-name">Rosca Direta</div>
+                    <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">12 Repetições</span><span>Barra Longa</span></div>
+                </div>
+                <a href="https://www.youtube.com/results?search_query=rosca+direta+com+barra" target="_blank" class="video-btn">▶ Vídeo</a>
+            </li>
+            <li class="exercise-item" id="qui4">
+                <div class="checkbox-container" onclick="toggleExercise('qui4')"><input type="checkbox"></div>
+                <div class="exercise-details">
+                    <div class="exercise-name">Abdominal Supra Clássico</div>
+                    <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">15 Repetições</span><span>Peso do Corpo</span></div>
+                </div>
+                <a href="https://www.youtube.com/results?search_query=abdominal+supra+solo" target="_blank" class="video-btn">▶ Vídeo</a>
+            </li>
+        </ul>
+        <div class="action-area"><button class="save-btn" onclick="saveProgress('Quinta')">☁️ Salvar Treino na Nuvem</button></div>
+    </div>
+
+    <!-- SEXTA -->
+    <div id="sexta" class="workout-card">
+        <h2>🔥 Sexta - Queima Calórica Completa (Full Body)</h2>
+        <ul class="exercise-list">
+            <li class="exercise-item" id="s1">
+                <div class="checkbox-container" onclick="toggleExercise('s1')"><input type="checkbox"></div>
+                <div class="exercise-details">
+                    <div class="exercise-name">Levantamento Terra (Deadlift)</div>
+                    <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">8 Repetições</span><span>Barra Longa</span></div>
+                </div>
+                <a href="https://www.youtube.com/results?search_query=levantamento+terra+barra" target="_blank" class="video-btn">▶ Vídeo</a>
+            </li>
+            <li class="exercise-item" id="s2">
+                <div class="checkbox-container" onclick="toggleExercise('s2')"><input type="checkbox"></div>
+                <div class="exercise-details">
+                    <div class="exercise-name">Agachamento Taça (Goblet Squat)</div>
+                    <div class="exercise-meta"><span class="tag">3 Séries</span><span class="tag">12 Repetições</span><span>1 Halter</span></div>
+                </div>
+                <a href="https://www.youtube.com/results?search_query=agachamento+goblet" target="_blank" class="video-btn">▶ Vídeo</a>
+            </li>
+            <li class="exercise-item" id="s3">
+                <div class="checkbox-container" onclick="toggleExercise('s3')"><input type="checkbox"></div>
+                <div class="exercise-details">
+                    <div class="exercise-name">Thrusters (Agacha e Empurra)</div>
+                    <div class="exercise-meta"><span class="tag">3 Séries</span><span class="tag">10 Repetições</span><span>Par de Halteres</span></div>
+                </div>
+                <a href="https://www.youtube.com/results?search_query=thruster+com+halter" target="_blank" class="video-btn">▶ Vídeo</a>
+            </li>
+            <li class="exercise-item" id="s4">
+                <div class="checkbox-container" onclick="toggleExercise('s4')"><input type="checkbox"></div>
+                <div class="exercise-details">
+                    <div class="exercise-name">Prancha Isométrica</div>
+                    <div class="exercise-meta"><span class="tag">3 Vezes</span><span class="tag">45 a 60 seg</span><span>Solo</span></div>
+                </div>
+                <a href="https://www.youtube.com/results?search_query=prancha+abdominal+isometria" target="_blank" class="video-btn">▶ Vídeo</a>
+            </li>
+        </ul>
+        <div class="action-area"><button class="save-btn" onclick="saveProgress('Sexta')">☁️ Salvar Treino na Nuvem</button></div>
+    </div>
+
+    <!-- CALENDÁRIO COM NAVEGAÇÃO DE MESES -->
+    <div class="diary-section">
+        <div class="diary-header">
+            <div class="month-navigation">
+                <button class="nav-btn" onclick="changeMonth(-1)">◀</button>
+                <h3 class="month-title" id="monthDisplay">Mês Ano</h3>
+                <button class="nav-btn" onclick="changeMonth(1)">▶</button>
+            </div>
+            <div class="status-cloud" id="syncStatus">🔄 Conectando...</div>
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
+</div>
+
 <script>
     const SUPABASE_URL = "https://znpeniqeagmeztwsuwbk.supabase.co"; 
     const SUPABASE_KEY = "sb_publishable_2VWFh2oe_n6xg9Xo_TIHIQ_W_CJPO0J"; 
     
-    let supabase;
+    // Inicialização direta e global limpa
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
     let currentCalendarDate = new Date();
     let cacheTrainedDays = [];
-
-    // Aguarda o navegador carregar completamente antes de iniciar a nuvem
-    window.addEventListener('DOMContentLoaded', () => {
-        try {
-            // Garante compatibilidade com o formato global exigido em celulares
-            if (window.supabase && typeof window.supabase.createClient === 'function') {
-                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-                fetchTrainedDays();
-            } else {
-                document.getElementById('syncStatus').innerText = "🔴 Erro: Biblioteca corrompida";
-                renderCalendar();
-            }
-        } catch(e) {
-            console.error(e);
-            document.getElementById('syncStatus').innerText = "🔴 Erro na inicialização";
-            renderCalendar();
-        }
-    });
 
     function switchDay(dayId) {
         document.querySelectorAll('.workout-card').forEach(card => card.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         document.getElementById(dayId).classList.add('active');
-        if(event) event.currentTarget.classList.add('active');
+        if(event && event.currentTarget) event.currentTarget.classList.add('active');
         updateProgressBar(dayId);
     }
 
@@ -51,9 +541,11 @@
         document.getElementById('progressBar').style.width = total > 0 ? (checked / total) * 100 + '%' : '0%';
     }
 
+    // --- CONEXÃO COM O SUPABASE ---
+
     async function fetchTrainedDays() {
         const statusEl = document.getElementById('syncStatus');
-        if(!supabase) return;
+        if(statusEl) statusEl.innerText = "🔄 Buscando dados...";
 
         try {
             const { data, error } = await supabase
@@ -64,12 +556,11 @@
 
             cacheTrainedDays = data.map(item => item.data_treino);
             if(statusEl) statusEl.innerText = "🟢 Nuvem Ativa";
-            renderCalendar();
         } catch (err) {
             console.error(err);
-            if(statusEl) statusEl.innerText = "🔴 Sem acesso à tabela";
-            renderCalendar();
+            if(statusEl) statusEl.innerText = "🔴 Sem acesso ao banco";
         }
+        renderCalendar();
     }
 
     async function saveProgress(dayName) {
@@ -81,7 +572,9 @@
             return;
         }
 
-        document.getElementById('syncStatus').innerText = "📤 Salvando...";
+        const statusEl = document.getElementById('syncStatus');
+        if(statusEl) statusEl.innerText = "📤 Salvando...";
+        
         try {
             const { error } = await supabase
                 .from('treinos_concluidos')
@@ -89,10 +582,11 @@
 
             if (error) throw error;
 
-            alert(`Excelente! Treino de ${dayName} salvom com sucesso na nuvem! 🚀`);
-            fetchTrainedDays();
+            alert(`Excelente! Treino de ${dayName} salvo com sucesso na nuvem! 🚀`);
+            await fetchTrainedDays();
         } catch (err) {
-            alert("Erro ao salvar! Verifique a permissão RLS da sua tabela no Supabase.");
+            alert("Erro ao salvar! Certifique-se de desativar o RLS no painel da tabela do Supabase.");
+            if(statusEl) statusEl.innerText = "🔴 Erro ao salvar";
             console.error(err);
         }
     }
@@ -153,6 +647,11 @@
             grid.appendChild(dayCell);
         }
     }
+
+    // Inicialização ao carregar a página
+    window.onload = function() {
+        fetchTrainedDays();
+    };
 </script>
 </body>
 </html>
