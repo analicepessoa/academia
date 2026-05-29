@@ -255,6 +255,16 @@
             border-radius: 20px;
         }
 
+        .calendar-info {
+            font-size: 0.85em;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            text-align: left;
+            background: #f8fafc;
+            padding: 8px;
+            border-radius: 6px;
+        }
+
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -271,11 +281,20 @@
 
         .calendar-day {
             background: #f1f5f9;
-            padding: 10px 0;
+            padding: 12px 0;
             border-radius: 6px;
             font-weight: 600;
             position: relative;
             font-size: 0.95em;
+            cursor: pointer;
+            transition: transform 0.1s, background-color 0.2s;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .calendar-day:hover {
+            transform: scale(1.05);
+            background-color: #cbd5e1;
         }
 
         .calendar-day.active-month {
@@ -287,6 +306,12 @@
             background-color: #d1fae5;
             color: #065f46;
             border: 2px solid var(--success);
+        }
+
+        .calendar-day.trained:hover {
+            background-color: #ffeeee;
+            color: var(--danger);
+            border-color: var(--danger);
         }
 
         .calendar-day.today {
@@ -360,7 +385,7 @@
                 <a href="https://www.youtube.com/results?search_query=triceps+testa+com+barra" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
         </ul>
-        <div class="action-area"><button class="save-btn" onclick="saveProgress('Terça')">☁️ Salvar Treino na Nuvem</button></div>
+        <div class="action-area"><button class="save-btn" onclick="saveProgressToday('Terça')">☁️ Salvar Treino de Hoje</button></div>
     </div>
 
     <div id="quarta" class="workout-card">
@@ -399,7 +424,7 @@
                 <a href="https://www.youtube.com/results?search_query=panturrilha+em+pe+com+barra" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
         </ul>
-        <div class="action-area"><button class="save-btn" onclick="saveProgress('Quarta')">☁️ Salvar Treino na Nuvem</button></div>
+        <div class="action-area"><button class="save-btn" onclick="saveProgressToday('Quarta')">☁️ Salvar Treino de Hoje</button></div>
     </div>
 
     <div id="quinta" class="workout-card">
@@ -438,7 +463,7 @@
                 <a href="https://www.youtube.com/results?search_query=abdominal+supra+solo" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
         </ul>
-        <div class="action-area"><button class="save-btn" onclick="saveProgress('Quinta')">☁️ Salvar Treino na Nuvem</button></div>
+        <div class="action-area"><button class="save-btn" onclick="saveProgressToday('Quinta')">☁️ Salvar Treino de Hoje</button></div>
     </div>
 
     <div id="sexta" class="workout-card">
@@ -477,7 +502,7 @@
                 <a href="https://www.youtube.com/results?search_query=prancha+abdominal+isometria" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
         </ul>
-        <div class="action-area"><button class="save-btn" onclick="saveProgress('Sexta')">☁️ Salvar Treino na Nuvem</button></div>
+        <div class="action-area"><button class="save-btn" onclick="saveProgressToday('Sexta')">☁️ Salvar Treino de Hoje</button></div>
     </div>
 
     <div class="diary-section">
@@ -489,19 +514,20 @@
             </div>
             <div class="status-cloud" id="syncStatus">🔄 Conectando...</div>
         </div>
+        <div class="calendar-info">
+            💡 <strong>Dica do Painel:</strong> Clique direto em qualquer número do calendário para **adicionar** ou **remover** um treino daquela data!
+        </div>
         <div class="calendar-grid" id="calendarGrid"></div>
     </div>
 </div>
 
 <script>
-    // Configurações REST do Supabase
     const BASE_REST_URL = "https://znpeniqeagmeztwsuwbk.supabase.co/rest/v1/treinos_concluidos"; 
     const PUBLIC_KEY = "sb_publishable_2VWFh2oe_n6xg9Xo_TIHIQ_W_CJPO0J"; 
 
     let currentCalendarDate = new Date();
     let cacheTrainedDays = [];
 
-    // Mudar as abas (Totalmente desvinculado e seguro contra travamento)
     function switchDay(dayId, buttonElement) {
         document.querySelectorAll('.workout-card').forEach(card => card.style.display = 'none');
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -513,7 +539,6 @@
         updateProgressBar(dayId);
     }
 
-    // Marcar exercício individual
     function toggleExercise(id, event) {
         if (event && event.target.tagName === 'A') return; 
 
@@ -539,13 +564,12 @@
         document.getElementById('progressBar').style.width = total > 0 ? (checked / total) * 100 + '%' : '0%';
     }
 
-    // --- CONEXÃO HTTP ASSÍNCRONA COMPLEMENTAR ---
+    // --- CONEXÃO HTTP ASSÍNCRONA ---
 
     function fetchTrainedDays() {
         const statusEl = document.getElementById('syncStatus');
         if (statusEl) statusEl.innerText = "🔄 Sincronizando...";
 
-        // Roda a requisição de rede sem prender o navegador
         fetch(BASE_REST_URL + "?select=data_treino", {
             method: "GET",
             headers: {
@@ -555,7 +579,7 @@
             }
         })
         .then(response => {
-            if (!response.ok) throw new Error("Erro CORS ou de permissão");
+            if (!response.ok) throw new Error("Erro de resposta");
             return response.json();
         })
         .then(data => {
@@ -564,43 +588,83 @@
             renderCalendar();
         })
         .catch(err => {
-            console.error("Conexão barrada pelo navegador:", err);
+            console.error(err);
             if (statusEl) statusEl.innerText = "⚠️ Modo Off-line";
             renderCalendar();
         });
     }
 
-    function saveProgress(dayName) {
+    // Salvar o dia de HOJE (Botão clássico do painel)
+    function saveProgressToday(dayName) {
         const today = new Date();
         const todayStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+        executeToggleDate(todayStr, true);
+    }
 
-        if (cacheTrainedDays.includes(todayStr)) {
-            alert("O treino de hoje já foi salvo!");
-            return;
-        }
-
+    // Função central que insere ou remove uma data no banco
+    function executeToggleDate(dateStr, isInserting) {
         const statusEl = document.getElementById('syncStatus');
-        if (statusEl) statusEl.innerText = "📤 Salvando...";
+        
+        if (isInserting) {
+            if (cacheTrainedDays.includes(dateStr)) {
+                alert("Essa data já está registrada!");
+                return;
+            }
+            if (statusEl) statusEl.innerText = "📤 Salvando...";
 
-        fetch(BASE_REST_URL, {
-            method: "POST",
-            headers: {
-                "apikey": PUBLIC_KEY,
-                "Authorization": `Bearer ${PUBLIC_KEY}`,
-                "Content-Type": "application/json",
-                "Prefer": "return=minimal"
-            },
-            body: JSON.stringify({ data_treino: todayStr })
-        })
-        .then(response => {
-            if (!response.ok) throw new Error("Erro ao salvar");
-            alert(`Excelente! Treino de ${dayName} sincronizado com sucesso! 🚀`);
-            fetchTrainedDays();
-        })
-        .catch(err => {
-            alert("Erro de CORS ou RLS! Certifique-se de que a tabela está pública (RLS desativado) no Supabase.");
-            if (statusEl) statusEl.innerText = "🔴 Erro de rede";
-        });
+            fetch(BASE_REST_URL, {
+                method: "POST",
+                headers: {
+                    "apikey": PUBLIC_KEY,
+                    "Authorization": `Bearer ${PUBLIC_KEY}`,
+                    "Content-Type": "application/json",
+                    "Prefer": "return=minimal"
+                },
+                body: JSON.stringify({ data_treino: dateStr })
+            })
+            .then(response => {
+                if (!response.ok) throw new Error("Erro ao salvar");
+                fetchTrainedDays();
+            })
+            .catch(err => {
+                alert("Erro ao salvar na nuvem!");
+                fetchTrainedDays();
+            });
+
+        } else {
+            // REMOVER DATA (Caso o usuário clique em um dia que já tem o fogo)
+            if (!confirm(`Deseja remover o registro de treino do dia ${dateStr.split('-').reverse().join('/')}?`)) return;
+            if (statusEl) statusEl.innerText = "🗑️ Removendo...";
+
+            fetch(`${BASE_REST_URL}?data_treino=eq.${dateStr}`, {
+                method: "DELETE",
+                headers: {
+                    "apikey": PUBLIC_KEY,
+                    "Authorization": `Bearer ${PUBLIC_KEY}`,
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(response => {
+                if (!response.ok) throw new Error("Erro ao deletar");
+                fetchTrainedDays();
+            })
+            .catch(err => {
+                alert("Erro ao deletar da nuvem!");
+                fetchTrainedDays();
+            });
+        }
+    }
+
+    // Ação acionada ao clicar em um dia específico do calendário
+    function handleDayClick(dayNumber) {
+        const year = currentCalendarDate.getFullYear();
+        const month = currentCalendarDate.getMonth();
+        const clickedDateStr = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(dayNumber).padStart(2, '0');
+
+        const isAlreadyTrained = cacheTrainedDays.includes(clickedDateStr);
+        
+        // Se já treinou, a intenção é remover. Se não treinou, insere.
+        executeToggleDate(clickedDateStr, !isAlreadyTrained);
     }
 
     function changeMonth(direction) {
@@ -656,14 +720,16 @@
                 dayCell.classList.add('today');
             }
 
+            // Associa a função de clique passando o número do dia
+            dayCell.setAttribute("onclick", `handleDayClick(${day})`);
+
             grid.appendChild(dayCell);
         }
     }
 
-    // Inicialização imediata das funções básicas do app
     window.onload = function() {
-        renderCalendar(); // Cria o calendário visual primeiro
-        fetchTrainedDays(); // Dispara a rede de forma totalmente independente secundária
+        renderCalendar();
+        fetchTrainedDays();
     };
 </script>
 </body>
