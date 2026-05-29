@@ -299,7 +299,7 @@
 <div class="container">
     <header>
         <h1>🏋️‍♂️ Monitor de Treino em Casa</h1>
-        <p>Sincronização Direta e Leve</p>
+        <p>Dashboard Estável de Acompanhamento</p>
     </header>
 
     <div class="meta-info">
@@ -314,10 +314,10 @@
     </div>
 
     <div class="tabs">
-        <button class="tab-btn active" onclick="switchDay('terca', event)">Terça (Empurrar)</button>
-        <button class="tab-btn" onclick="switchDay('quarta', event)">Quarta (Pernas)</button>
-        <button class="tab-btn" onclick="switchDay('quinta', event)">Quinta (Puxar)</button>
-        <button class="tab-btn" onclick="switchDay('sexta', event)">Sexta (Metabólico)</button>
+        <button class="tab-btn active" onclick="switchDay('terca', this)">Terça (Empurrar)</button>
+        <button class="tab-btn" onclick="switchDay('quarta', this)">Quarta (Pernas)</button>
+        <button class="tab-btn" onclick="switchDay('quinta', this)">Quinta (Puxar)</button>
+        <button class="tab-btn" onclick="switchDay('sexta', this)">Sexta (Metabólico)</button>
     </div>
 
     <div class="progress-container">
@@ -487,119 +487,120 @@
                 <h3 class="month-title" id="monthDisplay">Mês Ano</h3>
                 <button class="nav-btn" onclick="changeMonth(1)">▶</button>
             </div>
-            <div class="status-cloud" id="syncStatus">🔄 Sincronizando...</div>
+            <div class="status-cloud" id="syncStatus">🔄 Conectando...</div>
         </div>
         <div class="calendar-grid" id="calendarGrid"></div>
     </div>
 </div>
 
 <script>
-    // Configurações usando chamadas HTTP limpas nativas
+    // Configurações REST do Supabase
     const BASE_REST_URL = "https://znpeniqeagmeztwsuwbk.supabase.co/rest/v1/treinos_concluidos"; 
     const PUBLIC_KEY = "sb_publishable_2VWFh2oe_n6xg9Xo_TIHIQ_W_CJPO0J"; 
 
     let currentCalendarDate = new Date();
     let cacheTrainedDays = [];
 
-    // Alternar as abas dos treinos (Blindado contra falhas na nuvem)
-    function switchDay(dayId, event) {
-        document.querySelectorAll('.workout-card').forEach(card => card.classList.remove('active'));
+    // Mudar as abas (Totalmente desvinculado e seguro contra travamento)
+    function switchDay(dayId, buttonElement) {
+        document.querySelectorAll('.workout-card').forEach(card => card.style.display = 'none');
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         
-        document.getElementById(dayId).classList.add('active');
-        if (event && event.currentTarget) {
-            event.currentTarget.classList.add('active');
-        }
+        const targetCard = document.getElementById(dayId);
+        if (targetCard) targetCard.style.display = 'block';
+        if (buttonElement) buttonElement.classList.add('active');
+        
         updateProgressBar(dayId);
     }
 
-    // Marcar ou desmarcar o exercício individual
+    // Marcar exercício individual
     function toggleExercise(id, event) {
-        if (event && event.target.tagName === 'A') return; // Se clicou no link do vídeo, não mexe no checkbox
+        if (event && event.target.tagName === 'A') return; 
 
         const item = document.getElementById(id);
-        const checkbox = item.querySelector('input[type="checkbox"]');
+        if(!item) return;
         
+        const checkbox = item.querySelector('input[type="checkbox"]');
         if (event && event.target.type !== 'checkbox') {
             checkbox.checked = !checkbox.checked;
         }
         
-        if (checkbox.checked) {
-            item.classList.add('completed');
-        } else {
-            item.classList.remove('completed');
-        }
+        if (checkbox.checked) item.classList.add('completed');
+        else item.classList.remove('completed');
         
         updateProgressBar(item.closest('.workout-card').id);
     }
 
     function updateProgressBar(dayId) {
         const card = document.getElementById(dayId);
+        if(!card) return;
         const total = card.querySelectorAll('.exercise-item').length;
         const checked = card.querySelectorAll('input[type="checkbox"]:checked').length;
         document.getElementById('progressBar').style.width = total > 0 ? (checked / total) * 100 + '%' : '0%';
     }
 
-    // --- REQUISIÇÕES HTTP DIRETAS (Substitui a biblioteca pesada) ---
+    // --- CONEXÃO HTTP ASSÍNCRONA COMPLEMENTAR ---
 
-    async function fetchTrainedDays() {
+    function fetchTrainedDays() {
         const statusEl = document.getElementById('syncStatus');
-        
-        try {
-            const response = await fetch(BASE_REST_URL + "?select=data_treino", {
-                method: "GET",
-                headers: {
-                    "apikey": PUBLIC_KEY,
-                    "Authorization": `Bearer ${PUBLIC_KEY}`,
-                    "Content-Type": "application/json"
-                }
-            });
+        if (statusEl) statusEl.innerText = "🔄 Sincronizando...";
 
-            if (!response.ok) throw new Error("Erro na API");
-
-            const data = await response.json();
+        // Roda a requisição de rede sem prender o navegador
+        fetch(BASE_REST_URL + "?select=data_treino", {
+            method: "GET",
+            headers: {
+                "apikey": PUBLIC_KEY,
+                "Authorization": `Bearer ${PUBLIC_KEY}`,
+                "Content-Type": "application/json"
+            }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error("Erro CORS ou de permissão");
+            return response.json();
+        })
+        .then(data => {
             cacheTrainedDays = data.map(item => item.data_treino);
             if (statusEl) statusEl.innerText = "🟢 Nuvem Ativa";
-        } catch (err) {
-            console.error(err);
-            if (statusEl) statusEl.innerText = "⚠️ Modo Local (Sem Rede)";
-        }
-        renderCalendar();
+            renderCalendar();
+        })
+        .catch(err => {
+            console.error("Conexão barrada pelo navegador:", err);
+            if (statusEl) statusEl.innerText = "⚠️ Modo Off-line";
+            renderCalendar();
+        });
     }
 
-    async function saveProgress(dayName) {
+    function saveProgress(dayName) {
         const today = new Date();
         const todayStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
 
         if (cacheTrainedDays.includes(todayStr)) {
-            alert("Você já registrou o treino de hoje!");
+            alert("O treino de hoje já foi salvo!");
             return;
         }
 
         const statusEl = document.getElementById('syncStatus');
         if (statusEl) statusEl.innerText = "📤 Salvando...";
 
-        try {
-            const response = await fetch(BASE_REST_URL, {
-                method: "POST",
-                headers: {
-                    "apikey": PUBLIC_KEY,
-                    "Authorization": `Bearer ${PUBLIC_KEY}`,
-                    "Content-Type": "application/json",
-                    "Prefer": "return=minimal"
-                },
-                body: JSON.stringify({ data_treino: todayStr })
-            });
-
-            if (!response.ok) throw new Error("Erro ao inserir");
-
-            alert(`Excelente! Treino de ${dayName} salvo com sucesso! 🚀`);
-            await fetchTrainedDays();
-        } catch (err) {
-            alert("Erro ao salvar na nuvem! Certifique-se de desativar o RLS na tabela do seu Supabase.");
-            if (statusEl) statusEl.innerText = "🔴 Erro de permissão";
-            console.error(err);
-        }
+        fetch(BASE_REST_URL, {
+            method: "POST",
+            headers: {
+                "apikey": PUBLIC_KEY,
+                "Authorization": `Bearer ${PUBLIC_KEY}`,
+                "Content-Type": "application/json",
+                "Prefer": "return=minimal"
+            },
+            body: JSON.stringify({ data_treino: todayStr })
+        })
+        .then(response => {
+            if (!response.ok) throw new Error("Erro ao salvar");
+            alert(`Excelente! Treino de ${dayName} sincronizado com sucesso! 🚀`);
+            fetchTrainedDays();
+        })
+        .catch(err => {
+            alert("Erro de CORS ou RLS! Certifique-se de que a tabela está pública (RLS desativado) no Supabase.");
+            if (statusEl) statusEl.innerText = "🔴 Erro de rede";
+        });
     }
 
     function changeMonth(direction) {
@@ -659,9 +660,10 @@
         }
     }
 
-    // Inicialização direta imediata ao abrir o site
+    // Inicialização imediata das funções básicas do app
     window.onload = function() {
-        fetchTrainedDays();
+        renderCalendar(); // Cria o calendário visual primeiro
+        fetchTrainedDays(); // Dispara a rede de forma totalmente independente secundária
     };
 </script>
 </body>
