@@ -7,8 +7,6 @@
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏋️‍♂️</text></svg>">
     
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
     <style>
         :root {
             --primary: #2563eb;
@@ -301,7 +299,7 @@
 <div class="container">
     <header>
         <h1>🏋️‍♂️ Monitor de Treino em Casa</h1>
-        <p>Meu Painel de Evolução</p>
+        <p>Sincronização Direta e Leve</p>
     </header>
 
     <div class="meta-info">
@@ -310,16 +308,16 @@
             <small>Descanso: 45s a 60s entre séries.</small>
         </div>
         <div class="meta-card">
-            <strong>🎒 Equipamentos:</strong><br>
+            <strong>🎒 Equipamentos Atuais:</strong><br>
             <small>Barra Longa e Halteres Montáveis.</small>
         </div>
     </div>
 
     <div class="tabs">
-        <button class="tab-btn active" onclick="switchDay('terca')">Terça (Empurrar)</button>
-        <button class="tab-btn" onclick="switchDay('quarta')">Quarta (Pernas)</button>
-        <button class="tab-btn" onclick="switchDay('quinta')">Quinta (Puxar)</button>
-        <button class="tab-btn" onclick="switchDay('sexta')">Sexta (Metabólico)</button>
+        <button class="tab-btn active" onclick="switchDay('terca', event)">Terça (Empurrar)</button>
+        <button class="tab-btn" onclick="switchDay('quarta', event)">Quarta (Pernas)</button>
+        <button class="tab-btn" onclick="switchDay('quinta', event)">Quinta (Puxar)</button>
+        <button class="tab-btn" onclick="switchDay('sexta', event)">Sexta (Metabólico)</button>
     </div>
 
     <div class="progress-container">
@@ -329,32 +327,32 @@
     <div id="terca" class="workout-card active">
         <h2>💪 Terça - Peito, Ombro e Tríceps</h2>
         <ul class="exercise-list">
-            <li class="exercise-item" id="t1">
-                <div class="checkbox-container" onclick="toggleExercise('t1')"><input type="checkbox"></div>
+            <li class="exercise-item" id="t1" onclick="toggleExercise('t1', event)">
+                <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Supino Reto no Chão (Floor Press)</div>
                     <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">10 a 12 Repetições</span><span>Barra Longa</span></div>
                 </div>
                 <a href="https://www.youtube.com/results?search_query=floor+press+com+barra+execucao" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
-            <li class="exercise-item" id="t2">
-                <div class="checkbox-container" onclick="toggleExercise('t2')"><input type="checkbox"></div>
+            <li class="exercise-item" id="t2" onclick="toggleExercise('t2', event)">
+                <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Desenvolvimento de Ombros em Pé</div>
                     <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">10 Repetições</span><span>Halteres</span></div>
                 </div>
                 <a href="https://www.youtube.com/results?search_query=desenvolvimento+com+halter+em+pe" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
-            <li class="exercise-item" id="t3">
-                <div class="checkbox-container" onclick="toggleExercise('t3')"><input type="checkbox"></div>
+            <li class="exercise-item" id="t3" onclick="toggleExercise('t3', event)">
+                <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Elevação Lateral</div>
                     <div class="exercise-meta"><span class="tag">3 Séries</span><span class="tag">12 a 15 Repetições</span><span>Halteres</span></div>
                 </div>
                 <a href="https://www.youtube.com/results?search_query=eleva%C3%A7%C3%A3o+lateral+halteres" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
-            <li class="exercise-item" id="t4">
-                <div class="checkbox-container" onclick="toggleExercise('t4')"><input type="checkbox"></div>
+            <li class="exercise-item" id="t4" onclick="toggleExercise('t4', event)">
+                <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Tríceps Testa deitado</div>
                     <div class="exercise-meta"><span class="tag">3 Séries</span><span class="tag">12 Repetições</span><span>Barra Longa</span></div>
@@ -362,38 +360,38 @@
                 <a href="https://www.youtube.com/results?search_query=triceps+testa+com+barra" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
         </ul>
-        <div class="action-area"><button class="save-btn" onclick="saveProgress('Terça')">☁️ Salvar Treino</button></div>
+        <div class="action-area"><button class="save-btn" onclick="saveProgress('Terça')">☁️ Salvar Treino na Nuvem</button></div>
     </div>
 
     <div id="quarta" class="workout-card">
         <h2>🦵 Quarta - Pernas, Glúteos e Panturrilhas</h2>
         <ul class="exercise-list">
-            <li class="exercise-item" id="q1">
-                <div class="checkbox-container" onclick="toggleExercise('q1')"><input type="checkbox"></div>
+            <li class="exercise-item" id="q1" onclick="toggleExercise('q1', event)">
+                <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Agachamento Livre</div>
                     <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">12 Repetições</span><span>Barra nas Costas</span></div>
                 </div>
                 <a href="https://www.youtube.com/results?search_query=agachamento+livre+com+barra" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
-            <li class="exercise-item" id="q2">
-                <div class="checkbox-container" onclick="toggleExercise('q2')"><input type="checkbox"></div>
+            <li class="exercise-item" id="q2" onclick="toggleExercise('q2', event)">
+                <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Avanço / Passada</div>
                     <div class="exercise-meta"><span class="tag">3 Séries</span><span class="tag">10 Passos/perna</span><span>Halteres</span></div>
                 </div>
                 <a href="https://www.youtube.com/results?search_query=passada+com+halter" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
-            <li class="exercise-item" id="q3">
-                <div class="checkbox-container" onclick="toggleExercise('q3')"><input type="checkbox"></div>
+            <li class="exercise-item" id="q3" onclick="toggleExercise('q3', event)">
+                <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Stiff</div>
                     <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">10 Repetições</span><span>Barra Longa</span></div>
                 </div>
                 <a href="https://www.youtube.com/results?search_query=stiff+com+barra+execucao" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
-            <li class="exercise-item" id="q4">
-                <div class="checkbox-container" onclick="toggleExercise('q4')"><input type="checkbox"></div>
+            <li class="exercise-item" id="q4" onclick="toggleExercise('q4', event)">
+                <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Gêmeos em Pé (Panturrilhas)</div>
                     <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">20 Repetições</span><span>Barra em mãos</span></div>
@@ -401,38 +399,38 @@
                 <a href="https://www.youtube.com/results?search_query=panturrilha+em+pe+com+barra" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
         </ul>
-        <div class="action-area"><button class="save-btn" onclick="saveProgress('Quarta')">☁️ Salvar Treino</button></div>
+        <div class="action-area"><button class="save-btn" onclick="saveProgress('Quarta')">☁️ Salvar Treino na Nuvem</button></div>
     </div>
 
     <div id="quinta" class="workout-card">
         <h2>💪 Quinta - Costas, Bíceps e Abdômen</h2>
         <ul class="exercise-list">
-            <li class="exercise-item" id="qui1">
-                <div class="checkbox-container" onclick="toggleExercise('qui1')"><input type="checkbox"></div>
+            <li class="exercise-item" id="qui1" onclick="toggleExercise('qui1', event)">
+                <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Remada Curvada</div>
                     <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">10 Repetições</span><span>Barra Longa</span></div>
                 </div>
                 <a href="https://www.youtube.com/results?search_query=remada+curvada+com+barra" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
-            <li class="exercise-item" id="qui2">
-                <div class="checkbox-container" onclick="toggleExercise('qui2')"><input type="checkbox"></div>
+            <li class="exercise-item" id="qui2" onclick="toggleExercise('qui2', event)">
+                <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Remada Unilateral (Serrote)</div>
                     <div class="exercise-meta"><span class="tag">3 Séries</span><span class="tag">12 Reps (cada lado)</span><span>1 Halter</span></div>
                 </div>
                 <a href="https://www.youtube.com/results?search_query=remada+unilateral+serrote" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
-            <li class="exercise-item" id="qui3">
-                <div class="checkbox-container" onclick="toggleExercise('qui3')"><input type="checkbox"></div>
+            <li class="exercise-item" id="qui3" onclick="toggleExercise('qui3', event)">
+                <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Rosca Direta</div>
                     <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">12 Repetições</span><span>Barra Longa</span></div>
                 </div>
                 <a href="https://www.youtube.com/results?search_query=rosca+direta+com+barra" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
-            <li class="exercise-item" id="qui4">
-                <div class="checkbox-container" onclick="toggleExercise('qui4')"><input type="checkbox"></div>
+            <li class="exercise-item" id="qui4" onclick="toggleExercise('qui4', event)">
+                <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Abdominal Supra Clássico</div>
                     <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">15 Repetições</span><span>Peso do Corpo</span></div>
@@ -440,38 +438,38 @@
                 <a href="https://www.youtube.com/results?search_query=abdominal+supra+solo" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
         </ul>
-        <div class="action-area"><button class="save-btn" onclick="saveProgress('Quinta')">☁️ Salvar Treino</button></div>
+        <div class="action-area"><button class="save-btn" onclick="saveProgress('Quinta')">☁️ Salvar Treino na Nuvem</button></div>
     </div>
 
     <div id="sexta" class="workout-card">
         <h2>🔥 Sexta - Queima Calórica Completa (Full Body)</h2>
         <ul class="exercise-list">
-            <li class="exercise-item" id="s1">
-                <div class="checkbox-container" onclick="toggleExercise('s1')"><input type="checkbox"></div>
+            <li class="exercise-item" id="s1" onclick="toggleExercise('s1', event)">
+                <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Levantamento Terra (Deadlift)</div>
                     <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">8 Repetições</span><span>Barra Longa</span></div>
                 </div>
                 <a href="https://www.youtube.com/results?search_query=levantamento+terra+barra" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
-            <li class="exercise-item" id="s2">
-                <div class="checkbox-container" onclick="toggleExercise('s2')"><input type="checkbox"></div>
+            <li class="exercise-item" id="s2" onclick="toggleExercise('s2', event)">
+                <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Agachamento Taça (Goblet Squat)</div>
                     <div class="exercise-meta"><span class="tag">3 Séries</span><span class="tag">12 Repetições</span><span>1 Halter</span></div>
                 </div>
                 <a href="https://www.youtube.com/results?search_query=agachamento+goblet" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
-            <li class="exercise-item" id="s3">
-                <div class="checkbox-container" onclick="toggleExercise('s3')"><input type="checkbox"></div>
+            <li class="exercise-item" id="s3" onclick="toggleExercise('s3', event)">
+                <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Thrusters (Agacha e Empurra)</div>
                     <div class="exercise-meta"><span class="tag">3 Séries</span><span class="tag">10 Repetições</span><span>Par de Halteres</span></div>
                 </div>
                 <a href="https://www.youtube.com/results?search_query=thruster+com+halter" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
-            <li class="exercise-item" id="s4">
-                <div class="checkbox-container" onclick="toggleExercise('s4')"><input type="checkbox"></div>
+            <li class="exercise-item" id="s4" onclick="toggleExercise('s4', event)">
+                <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Prancha Isométrica</div>
                     <div class="exercise-meta"><span class="tag">3 Vezes</span><span class="tag">45 a 60 seg</span><span>Solo</span></div>
@@ -479,7 +477,7 @@
                 <a href="https://www.youtube.com/results?search_query=prancha+abdominal+isometria" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
         </ul>
-        <div class="action-area"><button class="save-btn" onclick="saveProgress('Sexta')">☁️ Salvar Treino</button></div>
+        <div class="action-area"><button class="save-btn" onclick="saveProgress('Sexta')">☁️ Salvar Treino na Nuvem</button></div>
     </div>
 
     <div class="diary-section">
@@ -489,49 +487,48 @@
                 <h3 class="month-title" id="monthDisplay">Mês Ano</h3>
                 <button class="nav-btn" onclick="changeMonth(1)">▶</button>
             </div>
-            <div class="status-cloud" id="syncStatus">🔄 Conectando...</div>
+            <div class="status-cloud" id="syncStatus">🔄 Sincronizando...</div>
         </div>
         <div class="calendar-grid" id="calendarGrid"></div>
     </div>
 </div>
 
 <script>
-    const SUPABASE_URL = "https://znpeniqeagmeztwsuwbk.supabase.co"; 
-    const SUPABASE_KEY = "sb_publishable_2VWFh2oe_n6xg9Xo_TIHIQ_W_CJPO0J"; 
-    
-    let supabase = null;
+    // Configurações usando chamadas HTTP limpas nativas
+    const BASE_REST_URL = "https://znpeniqeagmeztwsuwbk.supabase.co/rest/v1/treinos_concluidos"; 
+    const PUBLIC_KEY = "sb_publishable_2VWFh2oe_n6xg9Xo_TIHIQ_W_CJPO0J"; 
+
     let currentCalendarDate = new Date();
     let cacheTrainedDays = [];
 
-    // Tenta inicializar de forma segura para não dar tela branca se o celular bloquear o script
-    function initSupabase() {
-        try {
-            if (window.supabase && typeof window.supabase.createClient === 'function') {
-                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-                return true;
-            }
-        } catch (e) {
-            console.error("Erro ao ler biblioteca do Supabase:", e);
-        }
-        return false;
-    }
-
-    function switchDay(dayId) {
+    // Alternar as abas dos treinos (Blindado contra falhas na nuvem)
+    function switchDay(dayId, event) {
         document.querySelectorAll('.workout-card').forEach(card => card.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        
         document.getElementById(dayId).classList.add('active');
-        if (event && event.currentTarget) event.currentTarget.classList.add('active');
+        if (event && event.currentTarget) {
+            event.currentTarget.classList.add('active');
+        }
         updateProgressBar(dayId);
     }
 
-    function toggleExercise(id) {
+    // Marcar ou desmarcar o exercício individual
+    function toggleExercise(id, event) {
+        if (event && event.target.tagName === 'A') return; // Se clicou no link do vídeo, não mexe no checkbox
+
         const item = document.getElementById(id);
         const checkbox = item.querySelector('input[type="checkbox"]');
-        if (event && event.target.type !== 'checkbox' && event.target.tagName !== 'A') {
+        
+        if (event && event.target.type !== 'checkbox') {
             checkbox.checked = !checkbox.checked;
         }
-        if (checkbox.checked) item.classList.add('completed');
-        else item.classList.remove('completed');
+        
+        if (checkbox.checked) {
+            item.classList.add('completed');
+        } else {
+            item.classList.remove('completed');
+        }
         
         updateProgressBar(item.closest('.workout-card').id);
     }
@@ -543,29 +540,29 @@
         document.getElementById('progressBar').style.width = total > 0 ? (checked / total) * 100 + '%' : '0%';
     }
 
+    // --- REQUISIÇÕES HTTP DIRETAS (Substitui a biblioteca pesada) ---
+
     async function fetchTrainedDays() {
         const statusEl = document.getElementById('syncStatus');
         
-        if (!supabase) {
-            if (statusEl) statusEl.innerText = "⚠️ Modo Local (Nuvem Bloqueada)";
-            renderCalendar();
-            return;
-        }
-
-        if (statusEl) statusEl.innerText = "🔄 Sincronizando...";
-
         try {
-            const { data, error } = await supabase
-                .from('treinos_concluidos')
-                .select('data_treino');
+            const response = await fetch(BASE_REST_URL + "?select=data_treino", {
+                method: "GET",
+                headers: {
+                    "apikey": PUBLIC_KEY,
+                    "Authorization": `Bearer ${PUBLIC_KEY}`,
+                    "Content-Type": "application/json"
+                }
+            });
 
-            if (error) throw error;
+            if (!response.ok) throw new Error("Erro na API");
 
+            const data = await response.json();
             cacheTrainedDays = data.map(item => item.data_treino);
             if (statusEl) statusEl.innerText = "🟢 Nuvem Ativa";
         } catch (err) {
             console.error(err);
-            if (statusEl) statusEl.innerText = "🔴 Sem acesso ao banco";
+            if (statusEl) statusEl.innerText = "⚠️ Modo Local (Sem Rede)";
         }
         renderCalendar();
     }
@@ -575,26 +572,32 @@
         const todayStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
 
         if (cacheTrainedDays.includes(todayStr)) {
-            alert("Você já salvou o treino de hoje!");
+            alert("Você já registrou o treino de hoje!");
             return;
         }
 
-        if (!supabase) {
-            alert("A conexão com a nuvem está bloqueada no seu aparelho atual.");
-            return;
-        }
+        const statusEl = document.getElementById('syncStatus');
+        if (statusEl) statusEl.innerText = "📤 Salvando...";
 
         try {
-            const { error } = await supabase
-                .from('treinos_concluidos')
-                .insert([{ data_treino: todayStr }]);
+            const response = await fetch(BASE_REST_URL, {
+                method: "POST",
+                headers: {
+                    "apikey": PUBLIC_KEY,
+                    "Authorization": `Bearer ${PUBLIC_KEY}`,
+                    "Content-Type": "application/json",
+                    "Prefer": "return=minimal"
+                },
+                body: JSON.stringify({ data_treino: todayStr })
+            });
 
-            if (error) throw error;
+            if (!response.ok) throw new Error("Erro ao inserir");
 
-            alert(`Excelente! Treino de ${dayName} salvo com sucesso na nuvem! 🚀`);
+            alert(`Excelente! Treino de ${dayName} salvo com sucesso! 🚀`);
             await fetchTrainedDays();
         } catch (err) {
-            alert("Erro ao salvar! Verifique as permissões da tabela.");
+            alert("Erro ao salvar na nuvem! Certifique-se de desativar o RLS na tabela do seu Supabase.");
+            if (statusEl) statusEl.innerText = "🔴 Erro de permissão";
             console.error(err);
         }
     }
@@ -656,9 +659,8 @@
         }
     }
 
-    // Executa após carregar a página
+    // Inicialização direta imediata ao abrir o site
     window.onload = function() {
-        initSupabase();
         fetchTrainedDays();
     };
 </script>
