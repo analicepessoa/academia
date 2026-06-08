@@ -1,0 +1,17 @@
+{
+  "name": "Monitor de Treino em Casa",
+  "short_name": "Meu Treino",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#2563eb",
+  "description": "Dashboard para acompanhamento de treinos em casa.",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
