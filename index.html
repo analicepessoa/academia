@@ -522,15 +522,27 @@
             headers: { "Authorization": `Bearer ${PUBLIC_KEY}`, "Content-Type": "application/json" },
             body: JSON.stringify({ base64_image })
         })
-        .then(res => res.json())
+        .then(async res => {
+            const isJson = res.headers.get('content-type')?.includes('application/json');
+            const data = isJson ? await res.json() : await res.text();
+            
+            if (!res.ok) {
+                console.error("Erro do servidor:", res.status, data);
+                // Se der erro 404, 500, ou o Supabase barrar, ele joga para o catch com o texto real do erro
+                throw new Error(isJson ? (data.error || "Erro na IA") : `[Erro ${res.status}] ${data.substring(0, 50)}...`);
+            }
+            return data;
+        })
         .then(data => {
             btn.innerText = origText; btn.disabled = false;
             document.getElementById('aiResultContainer').style.display = 'block';
-            document.getElementById('aiResultText').innerText = data.error ? ("Erro: " + data.error) : data.result;
+            document.getElementById('aiResultText').innerText = data.result;
         })
         .catch(err => {
-            console.error(err); btn.innerText = origText; btn.disabled = false;
-            alert("Falha de conexão com a IA. A Edge Function 'analisar-prato' está online no Supabase?");
+            console.error(err); 
+            btn.innerText = origText; btn.disabled = false;
+            document.getElementById('aiResultContainer').style.display = 'block';
+            document.getElementById('aiResultText').innerText = "Detalhes técnicos da falha:\n" + err.message + "\n\nSe for [Erro 404], a função não está ativada. Se for NetworkError, pode ser bloqueio de CORS.";
         });
     }
 
