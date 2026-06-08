@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Dashboard de Treino em Casa</title>
     
-    <!-- Configurações para PWA -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2563eb">
     <link rel="apple-touch-icon" href="icon.svg">
@@ -27,7 +26,7 @@
             background-color: var(--light);
             color: var(--dark);
             margin: 0;
-            padding: 20px;
+            padding: 20px 20px 80px 20px; /* Extra padding para a barra inferior */
         }
 
         .container {
@@ -45,7 +44,7 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
-        /* --- NOVO: Seção de Perfil Pessoal --- */
+        /* --- Seção de Perfil Pessoal --- */
         .profile-section {
             display: flex;
             align-items: center;
@@ -63,7 +62,7 @@
             background: #e2e8f0;
             border-radius: 50%;
             display: flex;
-            align-items: center;
+            align-items: center;a
             justify-content: center;
             font-size: 35px;
             border: 3px solid var(--primary);
@@ -73,7 +72,7 @@
         .profile-info p { margin: 0; color: var(--secondary); font-size: 0.95em; }
         
         #installBtn {
-            display: none; /* Escondido até o navegador confirmar que é instalável */
+            display: none;
             background: var(--accent);
             color: white;
             border: none;
@@ -85,7 +84,6 @@
             transition: background 0.2s;
         }
         #installBtn:hover { background: #d97706; }
-        /* ------------------------------------ */
 
         .meta-info {
             display: flex;
@@ -142,6 +140,18 @@
         }
 
         .workout-card.active { display: block; }
+        
+        .calories-tag {
+            display: inline-block;
+            background: #fff7ed;
+            color: #c2410c;
+            font-size: 0.55em;
+            padding: 4px 10px;
+            border-radius: 20px;
+            vertical-align: middle;
+            margin-left: 10px;
+            border: 1px solid #fed7aa;
+        }
 
         .progress-container {
             background: #e2e8f0;
@@ -170,6 +180,8 @@
             padding: 15px;
             border-bottom: 1px solid #edf2f7;
             transition: background 0.2s;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .exercise-item:hover { background-color: #f8fafc; }
@@ -179,7 +191,7 @@
             display: flex;
             align-items: center;
             cursor: pointer;
-            padding-right: 15px;
+            padding-right: 10px;
         }
 
         .checkbox-container input[type="checkbox"] {
@@ -188,15 +200,16 @@
             cursor: pointer;
         }
 
-        .exercise-details { flex-grow: 1; }
+        .exercise-details { flex-grow: 1; min-width: 200px; }
         .exercise-name { font-weight: bold; font-size: 1.1em; margin-bottom: 4px; }
 
         .exercise-meta {
             font-size: 0.9em;
             color: #64748b;
             display: flex;
-            gap: 15px;
+            gap: 10px;
             flex-wrap: wrap;
+            align-items: center;
         }
 
         .tag {
@@ -205,6 +218,38 @@
             border-radius: 4px;
             font-weight: 500;
         }
+
+        /* --- Componentes de Carga --- */
+        .weight-control {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: #f8fafc;
+            padding: 5px 10px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+        .weight-control input {
+            width: 50px;
+            padding: 4px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .weight-control span { font-size: 0.85em; font-weight: 600; color: var(--secondary); }
+        .save-weight-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.8em;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .save-weight-btn:hover { background: #1e40af; }
+        /* --------------------------------- */
 
         .video-btn {
             background: #fee2e2;
@@ -219,6 +264,7 @@
             display: inline-flex;
             align-items: center;
             gap: 5px;
+            margin-left: auto;
         }
 
         .video-btn:hover { background: #fca5a5; }
@@ -242,19 +288,16 @@
             transition: transform 0.2s, background 0.2s;
         }
 
-        .save-btn:hover {
-            background-color: #059669;
-            transform: translateY(-2px);
-        }
+        .save-btn:hover { background-color: #059669; transform: translateY(-2px); }
 
-        /* Seção do Diário e Controles */
+        /* --- Calendário / Diário --- */
         .diary-section {
             background: white;
             border-radius: 12px;
             padding: 20px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
         }
-
         .diary-header {
             display: flex;
             justify-content: space-between;
@@ -265,13 +308,7 @@
             flex-wrap: wrap;
             gap: 10px;
         }
-
-        .month-navigation {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
+        .month-navigation { display: flex; align-items: center; gap: 10px; }
         .nav-btn {
             background: #e2e8f0;
             border: none;
@@ -281,50 +318,12 @@
             font-weight: bold;
             font-size: 1em;
         }
-
         .nav-btn:hover { background: #cbd5e1; }
-
-        .month-title {
-            margin: 0;
-            font-size: 1.2em;
-            min-width: 140px;
-            text-align: center;
-            text-transform: capitalize;
-        }
-
-        .status-cloud {
-            font-size: 0.85em;
-            color: var(--secondary);
-            font-weight: 600;
-            background: #f1f5f9;
-            padding: 6px 12px;
-            border-radius: 20px;
-        }
-
-        .calendar-info {
-            font-size: 0.85em;
-            color: var(--secondary);
-            margin-bottom: 15px;
-            text-align: left;
-            background: #f8fafc;
-            padding: 8px;
-            border-radius: 6px;
-        }
-
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
-            text-align: center;
-        }
-
-        .calendar-day-name {
-            font-weight: bold;
-            color: #64748b;
-            font-size: 0.9em;
-            padding-bottom: 5px;
-        }
-
+        .month-title { margin: 0; font-size: 1.2em; min-width: 140px; text-align: center; text-transform: capitalize; }
+        .status-cloud { font-size: 0.85em; color: var(--secondary); font-weight: 600; background: #f1f5f9; padding: 6px 12px; border-radius: 20px; }
+        .calendar-info { font-size: 0.85em; color: var(--secondary); margin-bottom: 15px; text-align: left; background: #f8fafc; padding: 8px; border-radius: 6px; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; }
+        .calendar-day-name { font-weight: bold; color: #64748b; font-size: 0.9em; padding-bottom: 5px; }
         .calendar-day {
             background: #f1f5f9;
             padding: 12px 0;
@@ -337,32 +336,74 @@
             -webkit-user-select: none;
             user-select: none;
         }
+        .calendar-day:hover { transform: scale(1.05); background-color: #cbd5e1; }
+        .calendar-day.active-month { background: #e2e8f0; color: var(--dark); }
+        .calendar-day.trained { background-color: #d1fae5; color: #065f46; border: 2px solid var(--success); }
+        .calendar-day.trained:hover { background-color: #ffeeee; color: var(--danger); border-color: var(--danger); }
+        .calendar-day.today { border: 2px dashed var(--primary); }
 
-        .calendar-day:hover {
-            transform: scale(1.05);
-            background-color: #cbd5e1;
+        /* --- Temporizador Fixo --- */
+        .timer-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--dark);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            flex-wrap: wrap;
+            box-sizing: border-box;
         }
+        .timer-title { font-weight: bold; font-size: 1.1em; }
+        .timer-btn {
+            background: #334155;
+            color: white;
+            border: 1px solid #475569;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .timer-btn:hover { background: #475569; }
+        .timer-btn.stop { background: var(--danger); border-color: var(--danger); }
+        .timer-display { font-size: 1.8em; font-family: monospace; font-weight: bold; color: var(--accent); min-width: 80px; text-align: center; }
 
-        .calendar-day.active-month {
-            background: #e2e8f0;
-            color: var(--dark);
+        /* --- Seção Receitas --- */
+        .recipe-form {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+            display: grid;
+            gap: 10px;
         }
-
-        .calendar-day.trained {
-            background-color: #d1fae5;
-            color: #065f46;
-            border: 2px solid var(--success);
+        .recipe-form input, .recipe-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-family: inherit;
         }
-
-        .calendar-day.trained:hover {
-            background-color: #ffeeee;
-            color: var(--danger);
-            border-color: var(--danger);
+        .recipe-list { display: grid; gap: 15px; }
+        .recipe-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 5px solid var(--accent);
         }
-
-        .calendar-day.today {
-            border: 2px dashed var(--primary);
-        }
+        .recipe-card h3 { margin: 0 0 5px 0; font-size: 1.1em; color: var(--dark); }
+        .recipe-card a { color: var(--primary); text-decoration: none; font-weight: bold; font-size: 0.9em; }
+        .recipe-card a:hover { text-decoration: underline; }
+        .recipe-card p { margin: 10px 0 0 0; font-size: 0.9em; color: var(--secondary); }
     </style>
 </head>
 <body>
@@ -373,21 +414,19 @@
         <p>Dashboard Estável de Acompanhamento</p>
     </header>
 
-    <!-- NOVO: Seção de Perfil -->
     <div class="profile-section">
         <div class="profile-pic">🦸‍♂️</div>
         <div class="profile-info">
             <h2>Olá, Atleta!</h2>
             <p>Meta: Hipertrofia | Peso: 78 kg | Treinos no Mês: <span id="treinosMesCount">0</span></p>
         </div>
-        <!-- Botão de Instalação (aparece dinamicamente) -->
         <button id="installBtn">📱 Instalar como App</button>
     </div>
 
     <div class="meta-info">
         <div class="meta-card time">
             <strong>⏱️ Duração Alvo:</strong> 50 a 60 minutos<br>
-            <small>Descanso: 45s a 60s entre séries.</small>
+            <small>Descanso ideal: 45s a 90s.</small>
         </div>
         <div class="meta-card">
             <strong>🎒 Equipamentos Atuais:</strong><br>
@@ -395,174 +434,238 @@
         </div>
     </div>
 
+    <!-- ABAS PRINCIPAIS -->
     <div class="tabs">
         <button class="tab-btn active" onclick="switchDay('terca', this)">Terça (Empurrar)</button>
         <button class="tab-btn" onclick="switchDay('quarta', this)">Quarta (Pernas)</button>
         <button class="tab-btn" onclick="switchDay('quinta', this)">Quinta (Puxar)</button>
-        <button class="tab-btn" onclick="switchDay('sexta', this)">Sexta (Metabólico)</button>
+        <button class="tab-btn" onclick="switchDay('sexta', this)">Sexta (Full Body)</button>
+        <button class="tab-btn" style="border-color: var(--accent); color: var(--accent);" onclick="switchDay('receitas', this)">🍽️ Receitas</button>
     </div>
 
-    <div class="progress-container">
+    <div class="progress-container" id="progBarContainer">
         <div class="progress-bar" id="progressBar"></div>
     </div>
 
-    <!-- ... Seus treinos inalterados ... -->
+    <!-- TREINO TERÇA -->
     <div id="terca" class="workout-card active">
-        <h2>💪 Terça - Peito, Ombro e Tríceps</h2>
+        <h2>💪 Terça - Peito, Ombro e Tríceps <span class="calories-tag">🔥 Gasto: ~300 kcal</span></h2>
         <ul class="exercise-list">
             <li class="exercise-item" id="t1" onclick="toggleExercise('t1', event)">
                 <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Supino Reto no Chão (Floor Press)</div>
-                    <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">10 a 12 Repetições</span><span>Barra Longa</span></div>
+                    <div class="exercise-meta">
+                        <span class="tag">4 Séries</span><span class="tag">10 a 12 Reps</span>
+                        <div class="weight-control">
+                            <input type="number" id="carga_t1" placeholder="--" onclick="event.stopPropagation()"><span>kg</span>
+                            <button class="save-weight-btn" onclick="saveWeight('t1', event)">Salvar</button>
+                        </div>
+                    </div>
                 </div>
-                <a href="https://www.youtube.com/results?search_query=floor+press+com+barra+execucao" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
             <li class="exercise-item" id="t2" onclick="toggleExercise('t2', event)">
                 <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Desenvolvimento de Ombros em Pé</div>
-                    <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">10 Repetições</span><span>Halteres</span></div>
+                    <div class="exercise-meta">
+                        <span class="tag">4 Séries</span><span class="tag">10 Reps</span>
+                        <div class="weight-control">
+                            <input type="number" id="carga_t2" placeholder="--" onclick="event.stopPropagation()"><span>kg</span>
+                            <button class="save-weight-btn" onclick="saveWeight('t2', event)">Salvar</button>
+                        </div>
+                    </div>
                 </div>
-                <a href="https://www.youtube.com/results?search_query=desenvolvimento+com+halter+em+pe" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
             <li class="exercise-item" id="t3" onclick="toggleExercise('t3', event)">
                 <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Elevação Lateral</div>
-                    <div class="exercise-meta"><span class="tag">3 Séries</span><span class="tag">12 a 15 Repetições</span><span>Halteres</span></div>
+                    <div class="exercise-meta">
+                        <span class="tag">3 Séries</span><span class="tag">12 a 15 Reps</span>
+                        <div class="weight-control">
+                            <input type="number" id="carga_t3" placeholder="--" onclick="event.stopPropagation()"><span>kg</span>
+                            <button class="save-weight-btn" onclick="saveWeight('t3', event)">Salvar</button>
+                        </div>
+                    </div>
                 </div>
-                <a href="https://www.youtube.com/results?search_query=eleva%C3%A7%C3%A3o+lateral+halteres" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
             <li class="exercise-item" id="t4" onclick="toggleExercise('t4', event)">
                 <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Tríceps Testa deitado</div>
-                    <div class="exercise-meta"><span class="tag">3 Séries</span><span class="tag">12 Repetições</span><span>Barra Longa</span></div>
+                    <div class="exercise-meta">
+                        <span class="tag">3 Séries</span><span class="tag">12 Reps</span>
+                        <div class="weight-control">
+                            <input type="number" id="carga_t4" placeholder="--" onclick="event.stopPropagation()"><span>kg</span>
+                            <button class="save-weight-btn" onclick="saveWeight('t4', event)">Salvar</button>
+                        </div>
+                    </div>
                 </div>
-                <a href="https://www.youtube.com/results?search_query=triceps+testa+com+barra" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
         </ul>
         <div class="action-area"><button class="save-btn" onclick="saveProgressToday('Terça')">☁️ Salvar Treino de Hoje</button></div>
     </div>
 
+    <!-- TREINO QUARTA -->
     <div id="quarta" class="workout-card">
-        <h2>🦵 Quarta - Pernas, Glúteos e Panturrilhas</h2>
+        <h2>🦵 Quarta - Pernas e Glúteos <span class="calories-tag">🔥 Gasto: ~400 kcal</span></h2>
         <ul class="exercise-list">
             <li class="exercise-item" id="q1" onclick="toggleExercise('q1', event)">
                 <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Agachamento Livre</div>
-                    <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">12 Repetições</span><span>Barra nas Costas</span></div>
+                    <div class="exercise-meta">
+                        <span class="tag">4 Séries</span><span class="tag">12 Reps</span>
+                        <div class="weight-control">
+                            <input type="number" id="carga_q1" placeholder="--" onclick="event.stopPropagation()"><span>kg</span>
+                            <button class="save-weight-btn" onclick="saveWeight('q1', event)">Salvar</button>
+                        </div>
+                    </div>
                 </div>
-                <a href="https://www.youtube.com/results?search_query=agachamento+livre+com+barra" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
             <li class="exercise-item" id="q2" onclick="toggleExercise('q2', event)">
                 <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Avanço / Passada</div>
-                    <div class="exercise-meta"><span class="tag">3 Séries</span><span class="tag">10 Passos/perna</span><span>Halteres</span></div>
+                    <div class="exercise-meta">
+                        <span class="tag">3 Séries</span><span class="tag">10 Passos/perna</span>
+                        <div class="weight-control">
+                            <input type="number" id="carga_q2" placeholder="--" onclick="event.stopPropagation()"><span>kg</span>
+                            <button class="save-weight-btn" onclick="saveWeight('q2', event)">Salvar</button>
+                        </div>
+                    </div>
                 </div>
-                <a href="https://www.youtube.com/results?search_query=passada+com+halter" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
             <li class="exercise-item" id="q3" onclick="toggleExercise('q3', event)">
                 <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Stiff</div>
-                    <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">10 Repetições</span><span>Barra Longa</span></div>
+                    <div class="exercise-meta">
+                        <span class="tag">4 Séries</span><span class="tag">10 Reps</span>
+                        <div class="weight-control">
+                            <input type="number" id="carga_q3" placeholder="--" onclick="event.stopPropagation()"><span>kg</span>
+                            <button class="save-weight-btn" onclick="saveWeight('q3', event)">Salvar</button>
+                        </div>
+                    </div>
                 </div>
-                <a href="https://www.youtube.com/results?search_query=stiff+com+barra+execucao" target="_blank" class="video-btn">▶ Vídeo</a>
-            </li>
-            <li class="exercise-item" id="q4" onclick="toggleExercise('q4', event)">
-                <div class="checkbox-container"><input type="checkbox"></div>
-                <div class="exercise-details">
-                    <div class="exercise-name">Gêmeos em Pé (Panturrilhas)</div>
-                    <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">20 Repetições</span><span>Barra em mãos</span></div>
-                </div>
-                <a href="https://www.youtube.com/results?search_query=panturrilha+em+pe+com+barra" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
         </ul>
         <div class="action-area"><button class="save-btn" onclick="saveProgressToday('Quarta')">☁️ Salvar Treino de Hoje</button></div>
     </div>
 
+    <!-- TREINO QUINTA -->
     <div id="quinta" class="workout-card">
-        <h2>💪 Quinta - Costas, Bíceps e Abdômen</h2>
+        <h2>💪 Quinta - Costas e Bíceps <span class="calories-tag">🔥 Gasto: ~300 kcal</span></h2>
         <ul class="exercise-list">
             <li class="exercise-item" id="qui1" onclick="toggleExercise('qui1', event)">
                 <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Remada Curvada</div>
-                    <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">10 Repetições</span><span>Barra Longa</span></div>
+                    <div class="exercise-meta">
+                        <span class="tag">4 Séries</span><span class="tag">10 Reps</span>
+                        <div class="weight-control">
+                            <input type="number" id="carga_qui1" placeholder="--" onclick="event.stopPropagation()"><span>kg</span>
+                            <button class="save-weight-btn" onclick="saveWeight('qui1', event)">Salvar</button>
+                        </div>
+                    </div>
                 </div>
-                <a href="https://www.youtube.com/results?search_query=remada+curvada+com+barra" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
             <li class="exercise-item" id="qui2" onclick="toggleExercise('qui2', event)">
                 <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Remada Unilateral (Serrote)</div>
-                    <div class="exercise-meta"><span class="tag">3 Séries</span><span class="tag">12 Reps (cada lado)</span><span>1 Halter</span></div>
+                    <div class="exercise-meta">
+                        <span class="tag">3 Séries</span><span class="tag">12 Reps (lado)</span>
+                        <div class="weight-control">
+                            <input type="number" id="carga_qui2" placeholder="--" onclick="event.stopPropagation()"><span>kg</span>
+                            <button class="save-weight-btn" onclick="saveWeight('qui2', event)">Salvar</button>
+                        </div>
+                    </div>
                 </div>
-                <a href="https://www.youtube.com/results?search_query=remada+unilateral+serrote" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
             <li class="exercise-item" id="qui3" onclick="toggleExercise('qui3', event)">
                 <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
                     <div class="exercise-name">Rosca Direta</div>
-                    <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">12 Repetições</span><span>Barra Longa</span></div>
+                    <div class="exercise-meta">
+                        <span class="tag">4 Séries</span><span class="tag">12 Reps</span>
+                        <div class="weight-control">
+                            <input type="number" id="carga_qui3" placeholder="--" onclick="event.stopPropagation()"><span>kg</span>
+                            <button class="save-weight-btn" onclick="saveWeight('qui3', event)">Salvar</button>
+                        </div>
+                    </div>
                 </div>
-                <a href="https://www.youtube.com/results?search_query=rosca+direta+com+barra" target="_blank" class="video-btn">▶ Vídeo</a>
-            </li>
-            <li class="exercise-item" id="qui4" onclick="toggleExercise('qui4', event)">
-                <div class="checkbox-container"><input type="checkbox"></div>
-                <div class="exercise-details">
-                    <div class="exercise-name">Abdominal Supra Clássico</div>
-                    <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">15 Repetições</span><span>Peso do Corpo</span></div>
-                </div>
-                <a href="https://www.youtube.com/results?search_query=abdominal+supra+solo" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
         </ul>
         <div class="action-area"><button class="save-btn" onclick="saveProgressToday('Quinta')">☁️ Salvar Treino de Hoje</button></div>
     </div>
 
+    <!-- TREINO SEXTA -->
     <div id="sexta" class="workout-card">
-        <h2>🔥 Sexta - Queima Calórica Completa (Full Body)</h2>
+        <h2>🔥 Sexta - Queima Calórica Completa <span class="calories-tag">🔥 Gasto: ~450 kcal</span></h2>
         <ul class="exercise-list">
             <li class="exercise-item" id="s1" onclick="toggleExercise('s1', event)">
                 <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
-                    <div class="exercise-name">Levantamento Terra (Deadlift)</div>
-                    <div class="exercise-meta"><span class="tag">4 Séries</span><span class="tag">8 Repetições</span><span>Barra Longa</span></div>
+                    <div class="exercise-name">Levantamento Terra</div>
+                    <div class="exercise-meta">
+                        <span class="tag">4 Séries</span><span class="tag">8 Reps</span>
+                        <div class="weight-control">
+                            <input type="number" id="carga_s1" placeholder="--" onclick="event.stopPropagation()"><span>kg</span>
+                            <button class="save-weight-btn" onclick="saveWeight('s1', event)">Salvar</button>
+                        </div>
+                    </div>
                 </div>
-                <a href="https://www.youtube.com/results?search_query=levantamento+terra+barra" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
             <li class="exercise-item" id="s2" onclick="toggleExercise('s2', event)">
                 <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
-                    <div class="exercise-name">Agachamento Taça (Goblet Squat)</div>
-                    <div class="exercise-meta"><span class="tag">3 Séries</span><span class="tag">12 Repetições</span><span>1 Halter</span></div>
+                    <div class="exercise-name">Agachamento Taça (Goblet)</div>
+                    <div class="exercise-meta">
+                        <span class="tag">3 Séries</span><span class="tag">12 Reps</span>
+                        <div class="weight-control">
+                            <input type="number" id="carga_s2" placeholder="--" onclick="event.stopPropagation()"><span>kg</span>
+                            <button class="save-weight-btn" onclick="saveWeight('s2', event)">Salvar</button>
+                        </div>
+                    </div>
                 </div>
-                <a href="https://www.youtube.com/results?search_query=agachamento+goblet" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
             <li class="exercise-item" id="s3" onclick="toggleExercise('s3', event)">
                 <div class="checkbox-container"><input type="checkbox"></div>
                 <div class="exercise-details">
-                    <div class="exercise-name">Thrusters (Agacha e Empurra)</div>
-                    <div class="exercise-meta"><span class="tag">3 Séries</span><span class="tag">10 Repetições</span><span>Par de Halteres</span></div>
+                    <div class="exercise-name">Thrusters</div>
+                    <div class="exercise-meta">
+                        <span class="tag">3 Séries</span><span class="tag">10 Reps</span>
+                        <div class="weight-control">
+                            <input type="number" id="carga_s3" placeholder="--" onclick="event.stopPropagation()"><span>kg</span>
+                            <button class="save-weight-btn" onclick="saveWeight('s3', event)">Salvar</button>
+                        </div>
+                    </div>
                 </div>
-                <a href="https://www.youtube.com/results?search_query=thruster+com+halter" target="_blank" class="video-btn">▶ Vídeo</a>
-            </li>
-            <li class="exercise-item" id="s4" onclick="toggleExercise('s4', event)">
-                <div class="checkbox-container"><input type="checkbox"></div>
-                <div class="exercise-details">
-                    <div class="exercise-name">Prancha Isométrica</div>
-                    <div class="exercise-meta"><span class="tag">3 Vezes</span><span class="tag">45 a 60 seg</span><span>Solo</span></div>
-                </div>
-                <a href="https://www.youtube.com/results?search_query=prancha+abdominal+isometria" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
         </ul>
         <div class="action-area"><button class="save-btn" onclick="saveProgressToday('Sexta')">☁️ Salvar Treino de Hoje</button></div>
     </div>
 
+    <!-- SEÇÃO RECEITAS -->
+    <div id="receitas" class="workout-card">
+        <h2>🍽️ Minhas Receitas Fit</h2>
+        <p style="color: var(--secondary); margin-top: 0;">Salve links e ideias de refeições para manter o foco na dieta.</p>
+        
+        <div class="recipe-form">
+            <input type="text" id="recipeTitle" placeholder="Nome da Receita (ex: Crepioca de Frango)">
+            <input type="url" id="recipeLink" placeholder="Link da Internet (opcional, ex: https://...)">
+            <textarea id="recipeNotes" rows="2" placeholder="Anotações rápidas (ex: 2 ovos, 2 colheres de tapioca...)"></textarea>
+            <button class="save-btn" style="padding: 10px; font-size: 1em;" onclick="saveRecipe()">Salvar Receita</button>
+        </div>
+
+        <div class="recipe-list" id="recipeListContainer">
+            <!-- As receitas aparecerão aqui via Supabase -->
+        </div>
+    </div>
+
+    <!-- DIÁRIO E CALENDÁRIO -->
     <div class="diary-section">
         <div class="diary-header">
             <div class="month-navigation">
@@ -573,48 +676,172 @@
             <div class="status-cloud" id="syncStatus">🔄 Conectando...</div>
         </div>
         <div class="calendar-info">
-            💡 <strong>Dica do Painel:</strong> Clique direto em qualquer número do calendário para **adicionar** ou **remover** um treino daquela data!
+            💡 <strong>Dica:</strong> Clique nos dias para registrar treinos antigos ou desmarcar.
         </div>
         <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
+
+    <!-- TEMPORIZADOR FIXO -->
+    <div class="timer-bar">
+        <span class="timer-title">⏱️ Descanso:</span>
+        <button class="timer-btn" onclick="startTimer(45)">45s</button>
+        <button class="timer-btn" onclick="startTimer(60)">60s</button>
+        <button class="timer-btn" onclick="startTimer(90)">90s</button>
+        <button class="timer-btn stop" onclick="stopTimer()">Parar</button>
+        <div class="timer-display" id="timeDisplay">00:00</div>
     </div>
 </div>
 
 <script>
-    // ----- PWA: REGISTRO DO SERVICE WORKER E INSTALAÇÃO -----
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js')
-                .then(reg => console.log('Service Worker registrado com sucesso.'))
-                .catch(err => console.log('Falha ao registrar o Service Worker:', err));
+    // --- SUPABASE CONFIG ---
+    const DB_URL = "https://znpeniqeagmeztwsuwbk.supabase.co/rest/v1"; 
+    const PUBLIC_KEY = "sb_publishable_2VWFh2oe_n6xg9Xo_TIHIQ_W_CJPO0J"; 
+    const HEADERS = {
+        "apikey": PUBLIC_KEY,
+        "Authorization": `Bearer ${PUBLIC_KEY}`,
+        "Content-Type": "application/json",
+        "Prefer": "return=representation"
+    };
+
+    // --- TEMPORIZADOR LÓGICA ---
+    let timerInterval;
+    let endTime;
+
+    function playBeep() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, ctx.currentTime);
+            osc.connect(ctx.destination);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.3); // Apita por 300ms
+        } catch(e) { console.log('Audio não suportado ou bloqueado no navegador.'); }
+    }
+
+    function updateTimeDisplay(seconds) {
+        if (seconds < 0) seconds = 0;
+        const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+        const s = (seconds % 60).toString().padStart(2, '0');
+        document.getElementById('timeDisplay').innerText = `${m}:${s}`;
+    }
+
+    function startTimer(seconds) {
+        clearInterval(timerInterval);
+        endTime = Date.now() + seconds * 1000;
+        updateTimeDisplay(seconds);
+        
+        timerInterval = setInterval(() => {
+            const remaining = Math.round((endTime - Date.now()) / 1000);
+            updateTimeDisplay(remaining);
+            if (remaining <= 0) {
+                clearInterval(timerInterval);
+                playBeep();
+                setTimeout(playBeep, 400); // Toca segundo beep rápido
+            }
+        }, 1000);
+    }
+
+    function stopTimer() {
+        clearInterval(timerInterval);
+        updateTimeDisplay(0);
+    }
+
+    // --- LÓGICA DE CARGAS ---
+    function fetchWeights() {
+        fetch(`${DB_URL}/historico_cargas?select=*&order=created_at.desc`, { headers: HEADERS })
+        .then(res => res.json())
+        .then(data => {
+            if(!Array.isArray(data)) return;
+            // Pega apenas a carga mais recente de cada exercício
+            const loaded = {};
+            data.forEach(item => {
+                if (!loaded[item.exercicio_id]) {
+                    loaded[item.exercicio_id] = true;
+                    const input = document.getElementById(`carga_${item.exercicio_id}`);
+                    if(input) input.value = item.carga;
+                }
+            });
+        }).catch(err => console.log('Erro ao buscar cargas. Tabela criada?', err));
+    }
+
+    function saveWeight(exercicioId, event) {
+        event.stopPropagation();
+        const input = document.getElementById(`carga_${exercicioId}`);
+        const cargaVal = parseFloat(input.value);
+        
+        if (isNaN(cargaVal)) { alert('Digite um número válido para a carga (peso).'); return; }
+        
+        const btn = event.target;
+        const textOrig = btn.innerText;
+        btn.innerText = "...";
+
+        fetch(`${DB_URL}/historico_cargas`, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify({ exercicio_id: exercicioId, carga: cargaVal })
+        })
+        .then(res => {
+            if(!res.ok) throw new Error("Falha ao salvar");
+            btn.innerText = "Salvo!";
+            btn.style.background = "var(--success)";
+            setTimeout(() => { btn.innerText = textOrig; btn.style.background = "var(--primary)"; }, 2000);
+        })
+        .catch(err => {
+            btn.innerText = textOrig;
+            alert('Erro ao salvar. Verifique se a tabela "historico_cargas" foi criada no Supabase!');
         });
     }
 
-    let deferredPrompt;
-    const installBtn = document.getElementById('installBtn');
+    // --- LÓGICA DE RECEITAS ---
+    function fetchRecipes() {
+        fetch(`${DB_URL}/receitas?select=*&order=created_at.desc`, { headers: HEADERS })
+        .then(res => res.json())
+        .then(data => {
+            if(!Array.isArray(data)) return;
+            const container = document.getElementById('recipeListContainer');
+            container.innerHTML = '';
+            
+            if(data.length === 0) {
+                container.innerHTML = '<p style="color: var(--secondary);">Nenhuma receita salva ainda. Adicione a sua primeira!</p>';
+                return;
+            }
 
-    window.addEventListener('beforeinstallprompt', (e) => {
-        // Previne o navegador de mostrar o prompt padrão imediatamente
-        e.preventDefault();
-        // Salva o evento para acionarmos depois no clique
-        deferredPrompt = e;
-        // Mostra o botão personalizado de instalação
-        installBtn.style.display = 'block';
-    });
+            data.forEach(item => {
+                container.innerHTML += `
+                    <div class="recipe-card">
+                        <h3>${item.titulo}</h3>
+                        ${item.url_link ? `<a href="${item.url_link}" target="_blank">🔗 Acessar Receita</a>` : ''}
+                        ${item.notas ? `<p>${item.notas}</p>` : ''}
+                    </div>
+                `;
+            });
+        }).catch(err => console.log('Erro ao buscar receitas. Tabela criada?', err));
+    }
 
-    installBtn.addEventListener('click', async () => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            console.log(`Escolha do usuário: ${outcome}`);
-            deferredPrompt = null;
-            installBtn.style.display = 'none';
-        }
-    });
-    // --------------------------------------------------------
+    function saveRecipe() {
+        const titulo = document.getElementById('recipeTitle').value.trim();
+        const url_link = document.getElementById('recipeLink').value.trim();
+        const notas = document.getElementById('recipeNotes').value.trim();
 
-    const BASE_REST_URL = "https://znpeniqeagmeztwsuwbk.supabase.co/rest/v1/treinos_concluidos"; 
-    const PUBLIC_KEY = "sb_publishable_2VWFh2oe_n6xg9Xo_TIHIQ_W_CJPO0J"; 
+        if(!titulo) { alert("O nome da receita é obrigatório!"); return; }
 
+        fetch(`${DB_URL}/receitas`, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify({ titulo, url_link, notas })
+        })
+        .then(res => {
+            if(!res.ok) throw new Error("Erro");
+            document.getElementById('recipeTitle').value = '';
+            document.getElementById('recipeLink').value = '';
+            document.getElementById('recipeNotes').value = '';
+            fetchRecipes(); // Recarrega as receitas na tela
+        })
+        .catch(err => alert('Erro ao salvar a receita. Verifique se a tabela "receitas" foi criada.'));
+    }
+
+    // --- LÓGICA DAS ABAS E CALENDÁRIO ---
     let currentCalendarDate = new Date();
     let cacheTrainedDays = [];
 
@@ -626,11 +853,15 @@
         if (targetCard) targetCard.style.display = 'block';
         if (buttonElement) buttonElement.classList.add('active');
         
+        // Esconder barra de progresso na aba de receitas
+        document.getElementById('progBarContainer').style.display = dayId === 'receitas' ? 'none' : 'block';
+        
         updateProgressBar(dayId);
     }
 
     function toggleExercise(id, event) {
-        if (event && event.target.tagName === 'A') return; 
+        // Se clicar nos inputs de carga ou botões, não marca o exercício como completo
+        if (event && (event.target.tagName === 'A' || event.target.tagName === 'INPUT' || event.target.tagName === 'BUTTON')) return; 
 
         const item = document.getElementById(id);
         if(!item) return;
@@ -647,6 +878,7 @@
     }
 
     function updateProgressBar(dayId) {
+        if(dayId === 'receitas') return;
         const card = document.getElementById(dayId);
         if(!card) return;
         const total = card.querySelectorAll('.exercise-item').length;
@@ -658,32 +890,18 @@
         const statusEl = document.getElementById('syncStatus');
         if (statusEl) statusEl.innerText = "🔄 Sincronizando...";
 
-        fetch(BASE_REST_URL + "?select=data_treino", {
-            method: "GET",
-            headers: {
-                "apikey": PUBLIC_KEY,
-                "Authorization": `Bearer ${PUBLIC_KEY}`,
-                "Content-Type": "application/json"
-            }
-        })
-        .then(response => {
-            if (!response.ok) throw new Error("Erro de resposta");
-            return response.json();
-        })
+        fetch(`${DB_URL}/treinos_concluidos?select=data_treino`, { method: "GET", headers: HEADERS })
+        .then(res => { if(!res.ok) throw new Error("Erro"); return res.json(); })
         .then(data => {
             cacheTrainedDays = data.map(item => item.data_treino);
             if (statusEl) statusEl.innerText = "🟢 Nuvem Ativa";
             renderCalendar();
-            updateStats(); // Atualiza a contagem do perfil
+            updateStats();
         })
-        .catch(err => {
-            console.error(err);
-            if (statusEl) statusEl.innerText = "⚠️ Modo Off-line";
-            renderCalendar();
-        });
+        .catch(err => { if (statusEl) statusEl.innerText = "⚠️ Off-line"; renderCalendar(); });
     }
 
-    function saveProgressToday(dayName) {
+    function saveProgressToday() {
         const today = new Date();
         const todayStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
         executeToggleDate(todayStr, true);
@@ -691,63 +909,29 @@
 
     function executeToggleDate(dateStr, isInserting) {
         const statusEl = document.getElementById('syncStatus');
-        
         if (isInserting) {
-            if (cacheTrainedDays.includes(dateStr)) {
-                alert("Essa data já está registrada!");
-                return;
-            }
+            if (cacheTrainedDays.includes(dateStr)) { alert("Data já registrada!"); return; }
             if (statusEl) statusEl.innerText = "📤 Salvando...";
 
-            fetch(BASE_REST_URL, {
-                method: "POST",
-                headers: {
-                    "apikey": PUBLIC_KEY,
-                    "Authorization": `Bearer ${PUBLIC_KEY}`,
-                    "Content-Type": "application/json",
-                    "Prefer": "return=minimal"
-                },
-                body: JSON.stringify({ data_treino: dateStr })
-            })
-            .then(response => {
-                if (!response.ok) throw new Error("Erro ao salvar");
-                fetchTrainedDays();
-            })
-            .catch(err => {
-                alert("Erro ao salvar na nuvem!");
-                fetchTrainedDays();
-            });
-
+            fetch(`${DB_URL}/treinos_concluidos`, { method: "POST", headers: HEADERS, body: JSON.stringify({ data_treino: dateStr }) })
+            .then(res => { if(!res.ok) throw new Error("Erro"); fetchTrainedDays(); })
+            .catch(err => { alert("Erro ao salvar!"); fetchTrainedDays(); });
         } else {
-            if (!confirm(`Deseja remover o registro de treino do dia ${dateStr.split('-').reverse().join('/')}?`)) return;
+            if (!confirm(`Deseja remover o treino do dia ${dateStr.split('-').reverse().join('/')}?`)) return;
             if (statusEl) statusEl.innerText = "🗑️ Removendo...";
 
-            fetch(`${BASE_REST_URL}?data_treino=eq.${dateStr}`, {
-                method: "DELETE",
-                headers: {
-                    "apikey": PUBLIC_KEY,
-                    "Authorization": `Bearer ${PUBLIC_KEY}`,
-                    "Content-Type": "application/json"
-                }
-            })
-            .then(response => {
-                if (!response.ok) throw new Error("Erro ao deletar");
-                fetchTrainedDays();
-            })
-            .catch(err => {
-                alert("Erro ao deletar da nuvem!");
-                fetchTrainedDays();
-            });
+            fetch(`${DB_URL}/treinos_concluidos?data_treino=eq.${dateStr}`, { method: "DELETE", headers: HEADERS })
+            .then(res => { if(!res.ok) throw new Error("Erro"); fetchTrainedDays(); })
+            .catch(err => { alert("Erro ao deletar!"); fetchTrainedDays(); });
         }
     }
 
     function handleDayClick(dayNumber) {
         const year = currentCalendarDate.getFullYear();
         const month = currentCalendarDate.getMonth();
-        const clickedDateStr = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(dayNumber).padStart(2, '0');
-
-        const isAlreadyTrained = cacheTrainedDays.includes(clickedDateStr);
-        executeToggleDate(clickedDateStr, !isAlreadyTrained);
+        const dateStr = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(dayNumber).padStart(2, '0');
+        const isTrained = cacheTrainedDays.includes(dateStr);
+        executeToggleDate(dateStr, !isTrained);
     }
 
     function changeMonth(direction) {
@@ -759,70 +943,58 @@
         const grid = document.getElementById('calendarGrid');
         if (!grid) return;
         grid.innerHTML = '';
-
         const year = currentCalendarDate.getFullYear();
         const month = currentCalendarDate.getMonth();
-
         const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-        const monthTitle = document.getElementById('monthDisplay');
-        if (monthTitle) monthTitle.innerText = `${monthNames[month]} ${year}`;
+        document.getElementById('monthDisplay').innerText = `${monthNames[month]} ${year}`;
 
-        const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-        daysOfWeek.forEach(day => {
-            const el = document.createElement('div');
-            el.className = 'calendar-day-name';
-            el.innerText = day;
-            grid.appendChild(el);
+        ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].forEach(day => {
+            const el = document.createElement('div'); el.className = 'calendar-day-name'; el.innerText = day; grid.appendChild(el);
         });
 
-        const firstDayOfMonth = new Date(year, month, 1).getDay();
+        const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
-        
-        const realToday = new Date();
-        const realTodayStr = realToday.getFullYear() + '-' + String(realToday.getMonth() + 1).padStart(2, '0') + '-' + String(realToday.getDate()).padStart(2, '0');
+        const realTodayStr = new Date().toISOString().split('T')[0];
 
-        for (let i = 0; i < firstDayOfMonth; i++) {
-            grid.appendChild(document.createElement('div'));
-        }
+        for (let i = 0; i < firstDay; i++) grid.appendChild(document.createElement('div'));
 
         for (let day = 1; day <= daysInMonth; day++) {
             const dayCell = document.createElement('div');
             dayCell.className = 'calendar-day active-month';
             dayCell.innerText = day;
+            const dateKey = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 
-            const currentMonthStr = String(month + 1).padStart(2, '0');
-            const currentDayStr = String(day).padStart(2, '0');
-            const dateKey = `${year}-${currentMonthStr}-${currentDayStr}`;
-
-            if (cacheTrainedDays.includes(dateKey)) {
-                dayCell.classList.add('trained');
-                dayCell.innerText = day + " 🔥";
-            }
-
-            if (dateKey === realTodayStr) {
-                dayCell.classList.add('today');
-            }
-
+            if (cacheTrainedDays.includes(dateKey)) { dayCell.classList.add('trained'); dayCell.innerText = day + " 🔥"; }
+            if (dateKey === realTodayStr) dayCell.classList.add('today');
             dayCell.setAttribute("onclick", `handleDayClick(${day})`);
             grid.appendChild(dayCell);
         }
     }
 
-    // --- NOVO: Atualiza a estatística da seção de perfil ---
     function updateStats() {
-        const year = new Date().getFullYear();
-        const month = String(new Date().getMonth() + 1).padStart(2, '0');
-        const prefix = `${year}-${month}`;
-        
-        const treinosNesseMes = cacheTrainedDays.filter(date => date.startsWith(prefix)).length;
-        const countSpan = document.getElementById('treinosMesCount');
-        if (countSpan) countSpan.innerText = treinosNesseMes;
+        const prefix = new Date().toISOString().slice(0, 7);
+        document.getElementById('treinosMesCount').innerText = cacheTrainedDays.filter(d => d.startsWith(prefix)).length;
     }
 
+    // INICIALIZAÇÃO
     window.onload = function() {
         renderCalendar();
         fetchTrainedDays();
+        fetchWeights();
+        fetchRecipes();
     };
+
+    // --- PWA INIT ---
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
+    }
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault(); deferredPrompt = e; document.getElementById('installBtn').style.display = 'block';
+    });
+    document.getElementById('installBtn').addEventListener('click', async () => {
+        if (deferredPrompt) { deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; document.getElementById('installBtn').style.display = 'none'; }
+    });
 </script>
 </body>
 </html>
