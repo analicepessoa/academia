@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Dashboard de Treino em Casa</title>
     
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏋️‍♂️</text></svg>">
+    <!-- Configurações para PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <link rel="apple-touch-icon" href="icon.svg">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏋️</text></svg>">
     
     <style>
         :root {
@@ -40,6 +44,48 @@
             border-radius: 12px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
+
+        /* --- NOVO: Seção de Perfil Pessoal --- */
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            flex-wrap: wrap;
+        }
+        .profile-pic {
+            width: 70px;
+            height: 70px;
+            background: #e2e8f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            border: 3px solid var(--primary);
+        }
+        .profile-info { flex-grow: 1; }
+        .profile-info h2 { margin: 0 0 5px 0; font-size: 1.3em; }
+        .profile-info p { margin: 0; color: var(--secondary); font-size: 0.95em; }
+        
+        #installBtn {
+            display: none; /* Escondido até o navegador confirmar que é instalável */
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: background 0.2s;
+        }
+        #installBtn:hover { background: #d97706; }
+        /* ------------------------------------ */
 
         .meta-info {
             display: flex;
@@ -323,9 +369,20 @@
 
 <div class="container">
     <header>
-        <h1>🏋️‍♂️ Monitor de Treino em Casa</h1>
+        <h1>Monitor de Treino em Casa</h1>
         <p>Dashboard Estável de Acompanhamento</p>
     </header>
+
+    <!-- NOVO: Seção de Perfil -->
+    <div class="profile-section">
+        <div class="profile-pic">🦸‍♂️</div>
+        <div class="profile-info">
+            <h2>Olá, Atleta!</h2>
+            <p>Meta: Hipertrofia | Peso: 78 kg | Treinos no Mês: <span id="treinosMesCount">0</span></p>
+        </div>
+        <!-- Botão de Instalação (aparece dinamicamente) -->
+        <button id="installBtn">📱 Instalar como App</button>
+    </div>
 
     <div class="meta-info">
         <div class="meta-card time">
@@ -349,6 +406,7 @@
         <div class="progress-bar" id="progressBar"></div>
     </div>
 
+    <!-- ... Seus treinos inalterados ... -->
     <div id="terca" class="workout-card active">
         <h2>💪 Terça - Peito, Ombro e Tríceps</h2>
         <ul class="exercise-list">
@@ -522,6 +580,38 @@
 </div>
 
 <script>
+    // ----- PWA: REGISTRO DO SERVICE WORKER E INSTALAÇÃO -----
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+                .then(reg => console.log('Service Worker registrado com sucesso.'))
+                .catch(err => console.log('Falha ao registrar o Service Worker:', err));
+        });
+    }
+
+    let deferredPrompt;
+    const installBtn = document.getElementById('installBtn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        // Previne o navegador de mostrar o prompt padrão imediatamente
+        e.preventDefault();
+        // Salva o evento para acionarmos depois no clique
+        deferredPrompt = e;
+        // Mostra o botão personalizado de instalação
+        installBtn.style.display = 'block';
+    });
+
+    installBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`Escolha do usuário: ${outcome}`);
+            deferredPrompt = null;
+            installBtn.style.display = 'none';
+        }
+    });
+    // --------------------------------------------------------
+
     const BASE_REST_URL = "https://znpeniqeagmeztwsuwbk.supabase.co/rest/v1/treinos_concluidos"; 
     const PUBLIC_KEY = "sb_publishable_2VWFh2oe_n6xg9Xo_TIHIQ_W_CJPO0J"; 
 
@@ -564,8 +654,6 @@
         document.getElementById('progressBar').style.width = total > 0 ? (checked / total) * 100 + '%' : '0%';
     }
 
-    // --- CONEXÃO HTTP ASSÍNCRONA ---
-
     function fetchTrainedDays() {
         const statusEl = document.getElementById('syncStatus');
         if (statusEl) statusEl.innerText = "🔄 Sincronizando...";
@@ -586,6 +674,7 @@
             cacheTrainedDays = data.map(item => item.data_treino);
             if (statusEl) statusEl.innerText = "🟢 Nuvem Ativa";
             renderCalendar();
+            updateStats(); // Atualiza a contagem do perfil
         })
         .catch(err => {
             console.error(err);
@@ -594,14 +683,12 @@
         });
     }
 
-    // Salvar o dia de HOJE (Botão clássico do painel)
     function saveProgressToday(dayName) {
         const today = new Date();
         const todayStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
         executeToggleDate(todayStr, true);
     }
 
-    // Função central que insere ou remove uma data no banco
     function executeToggleDate(dateStr, isInserting) {
         const statusEl = document.getElementById('syncStatus');
         
@@ -632,7 +719,6 @@
             });
 
         } else {
-            // REMOVER DATA (Caso o usuário clique em um dia que já tem o fogo)
             if (!confirm(`Deseja remover o registro de treino do dia ${dateStr.split('-').reverse().join('/')}?`)) return;
             if (statusEl) statusEl.innerText = "🗑️ Removendo...";
 
@@ -655,15 +741,12 @@
         }
     }
 
-    // Ação acionada ao clicar em um dia específico do calendário
     function handleDayClick(dayNumber) {
         const year = currentCalendarDate.getFullYear();
         const month = currentCalendarDate.getMonth();
         const clickedDateStr = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(dayNumber).padStart(2, '0');
 
         const isAlreadyTrained = cacheTrainedDays.includes(clickedDateStr);
-        
-        // Se já treinou, a intenção é remover. Se não treinou, insere.
         executeToggleDate(clickedDateStr, !isAlreadyTrained);
     }
 
@@ -720,11 +803,20 @@
                 dayCell.classList.add('today');
             }
 
-            // Associa a função de clique passando o número do dia
             dayCell.setAttribute("onclick", `handleDayClick(${day})`);
-
             grid.appendChild(dayCell);
         }
+    }
+
+    // --- NOVO: Atualiza a estatística da seção de perfil ---
+    function updateStats() {
+        const year = new Date().getFullYear();
+        const month = String(new Date().getMonth() + 1).padStart(2, '0');
+        const prefix = `${year}-${month}`;
+        
+        const treinosNesseMes = cacheTrainedDays.filter(date => date.startsWith(prefix)).length;
+        const countSpan = document.getElementById('treinosMesCount');
+        if (countSpan) countSpan.innerText = treinosNesseMes;
     }
 
     window.onload = function() {
