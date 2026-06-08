@@ -26,298 +26,116 @@
             background-color: var(--light);
             color: var(--dark);
             margin: 0;
-            padding: 20px 20px 80px 20px; /* Extra padding para a barra inferior */
+            padding: 20px 20px 80px 20px;
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
+        .container { max-width: 800px; margin: 0 auto; }
 
         header {
-            text-align: center;
-            margin-bottom: 25px;
+            text-align: center; margin-bottom: 25px;
             background: linear-gradient(135deg, #1e3a8a, #2563eb);
-            color: white;
-            padding: 25px 20px;
-            border-radius: 12px;
+            color: white; padding: 25px 20px; border-radius: 12px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
-        /* --- Seção de Perfil Pessoal --- */
         .profile-section {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            flex-wrap: wrap;
+            display: flex; align-items: center; gap: 15px; background: white;
+            padding: 20px; border-radius: 12px; margin-bottom: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); flex-wrap: wrap;
         }
         .profile-pic {
-            width: 70px;
-            height: 70px;
-            background: #e2e8f0;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;a
-            justify-content: center;
-            font-size: 35px;
-            border: 3px solid var(--primary);
+            width: 70px; height: 70px; background: #e2e8f0; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 35px; border: 3px solid var(--primary);
         }
         .profile-info { flex-grow: 1; }
         .profile-info h2 { margin: 0 0 5px 0; font-size: 1.3em; }
         .profile-info p { margin: 0; color: var(--secondary); font-size: 0.95em; }
         
         #installBtn {
-            display: none;
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: background 0.2s;
+            display: none; background: var(--accent); color: white; border: none;
+            padding: 10px 18px; border-radius: 8px; font-weight: bold;
+            cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: background 0.2s;
         }
         #installBtn:hover { background: #d97706; }
 
-        .meta-info {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
+        .meta-info { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
         .meta-card {
-            flex: 1;
-            min-width: 150px;
-            background: white;
-            padding: 12px;
-            border-radius: 8px;
-            border-left: 5px solid var(--primary);
-            font-size: 0.95em;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            flex: 1; min-width: 150px; background: white; padding: 12px;
+            border-radius: 8px; border-left: 5px solid var(--primary);
+            font-size: 0.95em; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
-
         .meta-card.time { border-left-color: var(--accent); }
 
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            overflow-x: auto;
-            padding-bottom: 5px;
-        }
-
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
         .tab-btn {
-            background: white;
-            border: 2px solid #e2e8f0;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            white-space: nowrap;
-            transition: all 0.3s;
+            background: white; border: 2px solid #e2e8f0; padding: 12px 20px;
+            border-radius: 8px; cursor: pointer; font-weight: bold;
+            white-space: nowrap; transition: all 0.3s;
         }
-
-        .tab-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
 
         .workout-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            display: none;
-            margin-bottom: 25px;
+            background: white; border-radius: 12px; padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: none; margin-bottom: 25px;
         }
-
         .workout-card.active { display: block; }
         
         .calories-tag {
-            display: inline-block;
-            background: #fff7ed;
-            color: #c2410c;
-            font-size: 0.55em;
-            padding: 4px 10px;
-            border-radius: 20px;
-            vertical-align: middle;
-            margin-left: 10px;
-            border: 1px solid #fed7aa;
+            display: inline-block; background: #fff7ed; color: #c2410c;
+            font-size: 0.55em; padding: 4px 10px; border-radius: 20px;
+            vertical-align: middle; margin-left: 10px; border: 1px solid #fed7aa;
         }
 
-        .progress-container {
-            background: #e2e8f0;
-            border-radius: 10px;
-            height: 12px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
+        .progress-container { background: #e2e8f0; border-radius: 10px; height: 12px; margin-bottom: 20px; overflow: hidden; }
+        .progress-bar { background: var(--success); height: 100%; width: 0%; transition: width 0.3s ease; }
 
-        .progress-bar {
-            background: var(--success);
-            height: 100%;
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        .exercise-list {
-            list-style: none;
-            padding: 0;
-            margin-bottom: 20px;
-        }
-
+        .exercise-list { list-style: none; padding: 0; margin-bottom: 20px; }
         .exercise-item {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            border-bottom: 1px solid #edf2f7;
-            transition: background 0.2s;
-            flex-wrap: wrap;
-            gap: 10px;
+            display: flex; align-items: center; padding: 15px;
+            border-bottom: 1px solid #edf2f7; transition: background 0.2s;
+            flex-wrap: wrap; gap: 10px;
         }
-
         .exercise-item:hover { background-color: #f8fafc; }
         .exercise-item:last-child { border-bottom: none; }
 
-        .checkbox-container {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            padding-right: 10px;
-        }
-
-        .checkbox-container input[type="checkbox"] {
-            width: 22px;
-            height: 22px;
-            cursor: pointer;
-        }
+        .checkbox-container { display: flex; align-items: center; cursor: pointer; padding-right: 10px; }
+        .checkbox-container input[type="checkbox"] { width: 22px; height: 22px; cursor: pointer; }
 
         .exercise-details { flex-grow: 1; min-width: 200px; }
         .exercise-name { font-weight: bold; font-size: 1.1em; margin-bottom: 4px; }
+        .exercise-meta { font-size: 0.9em; color: #64748b; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+        .tag { background: #f1f5f9; padding: 2px 8px; border-radius: 4px; font-weight: 500; }
 
-        .exercise-meta {
-            font-size: 0.9em;
-            color: #64748b;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .tag {
-            background: #f1f5f9;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: 500;
-        }
-
-        /* --- Componentes de Carga --- */
         .weight-control {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            background: #f8fafc;
-            padding: 5px 10px;
-            border-radius: 6px;
-            border: 1px solid #e2e8f0;
+            display: flex; align-items: center; gap: 5px; background: #f8fafc;
+            padding: 5px 10px; border-radius: 6px; border: 1px solid #e2e8f0;
         }
-        .weight-control input {
-            width: 50px;
-            padding: 4px;
-            border: 1px solid #cbd5e1;
-            border-radius: 4px;
-            text-align: center;
-            font-weight: bold;
-        }
+        .weight-control input { width: 50px; padding: 4px; border: 1px solid #cbd5e1; border-radius: 4px; text-align: center; font-weight: bold; }
         .weight-control span { font-size: 0.85em; font-weight: 600; color: var(--secondary); }
-        .save-weight-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 4px 8px;
-            font-size: 0.8em;
-            cursor: pointer;
-            font-weight: bold;
-        }
+        .save-weight-btn { background: var(--primary); color: white; border: none; border-radius: 4px; padding: 4px 8px; font-size: 0.8em; cursor: pointer; font-weight: bold; }
         .save-weight-btn:hover { background: #1e40af; }
-        /* --------------------------------- */
 
         .video-btn {
-            background: #fee2e2;
-            color: #dc2626;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.85em;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            margin-left: auto;
+            background: #fee2e2; color: #dc2626; border: none; padding: 8px 12px;
+            border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.85em;
+            text-decoration: none; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;
         }
-
         .video-btn:hover { background: #fca5a5; }
         .completed .exercise-name { text-decoration: line-through; color: #94a3b8; }
 
-        .action-area {
-            text-align: center;
-            padding: 10px 0;
-        }
-
+        .action-area { text-align: center; padding: 10px 0; }
         .save-btn {
-            background-color: var(--success);
-            color: white;
-            border: none;
-            padding: 14px 28px;
-            font-size: 1.1em;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
-            transition: transform 0.2s, background 0.2s;
+            background-color: var(--success); color: white; border: none; padding: 14px 28px;
+            font-size: 1.1em; font-weight: bold; border-radius: 8px; cursor: pointer;
+            box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2); transition: transform 0.2s, background 0.2s;
         }
-
         .save-btn:hover { background-color: #059669; transform: translateY(-2px); }
 
-        /* --- Calendário / Diário --- */
-        .diary-section {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            margin-bottom: 25px;
-        }
-        .diary-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #f1f5f9;
-            padding-bottom: 10px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+        .diary-section { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        .diary-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; flex-wrap: wrap; gap: 10px; }
         .month-navigation { display: flex; align-items: center; gap: 10px; }
-        .nav-btn {
-            background: #e2e8f0;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1em;
-        }
+        .nav-btn { background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1em; }
         .nav-btn:hover { background: #cbd5e1; }
         .month-title { margin: 0; font-size: 1.2em; min-width: 140px; text-align: center; text-transform: capitalize; }
         .status-cloud { font-size: 0.85em; color: var(--secondary); font-weight: 600; background: #f1f5f9; padding: 6px 12px; border-radius: 20px; }
@@ -325,16 +143,8 @@
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; }
         .calendar-day-name { font-weight: bold; color: #64748b; font-size: 0.9em; padding-bottom: 5px; }
         .calendar-day {
-            background: #f1f5f9;
-            padding: 12px 0;
-            border-radius: 6px;
-            font-weight: 600;
-            position: relative;
-            font-size: 0.95em;
-            cursor: pointer;
-            transition: transform 0.1s, background-color 0.2s;
-            -webkit-user-select: none;
-            user-select: none;
+            background: #f1f5f9; padding: 12px 0; border-radius: 6px; font-weight: 600;
+            position: relative; font-size: 0.95em; cursor: pointer; transition: transform 0.1s, background-color 0.2s; user-select: none;
         }
         .calendar-day:hover { transform: scale(1.05); background-color: #cbd5e1; }
         .calendar-day.active-month { background: #e2e8f0; color: var(--dark); }
@@ -342,68 +152,34 @@
         .calendar-day.trained:hover { background-color: #ffeeee; color: var(--danger); border-color: var(--danger); }
         .calendar-day.today { border: 2px dashed var(--primary); }
 
-        /* --- Temporizador Fixo --- */
         .timer-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: var(--dark);
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
-            z-index: 1000;
-            flex-wrap: wrap;
-            box-sizing: border-box;
+            position: fixed; bottom: 0; left: 0; width: 100%; background: var(--dark);
+            color: white; padding: 15px 20px; display: flex; align-items: center;
+            justify-content: center; gap: 15px; box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+            z-index: 1000; flex-wrap: wrap; box-sizing: border-box;
         }
         .timer-title { font-weight: bold; font-size: 1.1em; }
-        .timer-btn {
-            background: #334155;
-            color: white;
-            border: 1px solid #475569;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+        .timer-btn { background: #334155; color: white; border: 1px solid #475569; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; }
         .timer-btn:hover { background: #475569; }
         .timer-btn.stop { background: var(--danger); border-color: var(--danger); }
         .timer-display { font-size: 1.8em; font-family: monospace; font-weight: bold; color: var(--accent); min-width: 80px; text-align: center; }
 
-        /* --- Seção Receitas --- */
-        .recipe-form {
-            background: #f8fafc;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-            margin-bottom: 20px;
-            display: grid;
-            gap: 10px;
-        }
-        .recipe-form input, .recipe-form textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-family: inherit;
-        }
+        .recipe-form { background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 20px; display: grid; gap: 10px; }
+        .recipe-form input, .recipe-form textarea { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-family: inherit; }
         .recipe-list { display: grid; gap: 15px; }
-        .recipe-card {
-            background: white;
-            border: 1px solid #e2e8f0;
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 5px solid var(--accent);
-        }
+        .recipe-card { background: white; border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; border-left: 5px solid var(--accent); }
         .recipe-card h3 { margin: 0 0 5px 0; font-size: 1.1em; color: var(--dark); }
         .recipe-card a { color: var(--primary); text-decoration: none; font-weight: bold; font-size: 0.9em; }
-        .recipe-card a:hover { text-decoration: underline; }
         .recipe-card p { margin: 10px 0 0 0; font-size: 0.9em; color: var(--secondary); }
+
+        /* --- Seção Conquistas --- */
+        .timeline { position: relative; max-width: 100%; margin: 20px 0; }
+        .timeline::after { content: ''; position: absolute; width: 4px; background-color: #8b5cf6; top: 0; bottom: 0; left: 20px; border-radius: 4px; }
+        .timeline-item { padding: 10px 10px 10px 45px; position: relative; background-color: inherit; width: 100%; box-sizing: border-box; }
+        .timeline-item::after { content: '🏆'; position: absolute; width: 30px; height: 30px; left: 7px; background-color: white; border: 3px solid #8b5cf6; top: 15px; border-radius: 50%; z-index: 1; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+        .timeline-content { padding: 15px; background-color: white; position: relative; border-radius: 8px; border: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .timeline-date { color: var(--secondary); font-size: 0.85em; font-weight: bold; margin-bottom: 5px; display: block; }
+        .timeline-text { margin: 0; font-size: 1em; color: var(--dark); }
     </style>
 </head>
 <body>
@@ -434,20 +210,20 @@
         </div>
     </div>
 
-    <!-- ABAS PRINCIPAIS -->
     <div class="tabs">
         <button class="tab-btn active" onclick="switchDay('terca', this)">Terça (Empurrar)</button>
         <button class="tab-btn" onclick="switchDay('quarta', this)">Quarta (Pernas)</button>
         <button class="tab-btn" onclick="switchDay('quinta', this)">Quinta (Puxar)</button>
         <button class="tab-btn" onclick="switchDay('sexta', this)">Sexta (Full Body)</button>
         <button class="tab-btn" style="border-color: var(--accent); color: var(--accent);" onclick="switchDay('receitas', this)">🍽️ Receitas</button>
+        <button class="tab-btn" style="border-color: #8b5cf6; color: #8b5cf6;" onclick="switchDay('conquistasTab', this)">🏆 Conquistas</button>
     </div>
 
     <div class="progress-container" id="progBarContainer">
         <div class="progress-bar" id="progressBar"></div>
     </div>
 
-    <!-- TREINO TERÇA -->
+    <!-- TERÇA -->
     <div id="terca" class="workout-card active">
         <h2>💪 Terça - Peito, Ombro e Tríceps <span class="calories-tag">🔥 Gasto: ~300 kcal</span></h2>
         <ul class="exercise-list">
@@ -463,6 +239,7 @@
                         </div>
                     </div>
                 </div>
+                <a href="https://www.youtube.com/results?search_query=floor+press+com+barra+execucao" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
             <li class="exercise-item" id="t2" onclick="toggleExercise('t2', event)">
                 <div class="checkbox-container"><input type="checkbox"></div>
@@ -476,6 +253,7 @@
                         </div>
                     </div>
                 </div>
+                <a href="https://www.youtube.com/results?search_query=desenvolvimento+com+halter+em+pe" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
             <li class="exercise-item" id="t3" onclick="toggleExercise('t3', event)">
                 <div class="checkbox-container"><input type="checkbox"></div>
@@ -489,6 +267,7 @@
                         </div>
                     </div>
                 </div>
+                <a href="https://www.youtube.com/results?search_query=eleva%C3%A7%C3%A3o+lateral+halteres" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
             <li class="exercise-item" id="t4" onclick="toggleExercise('t4', event)">
                 <div class="checkbox-container"><input type="checkbox"></div>
@@ -502,12 +281,13 @@
                         </div>
                     </div>
                 </div>
+                <a href="https://www.youtube.com/results?search_query=triceps+testa+com+barra" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
         </ul>
         <div class="action-area"><button class="save-btn" onclick="saveProgressToday('Terça')">☁️ Salvar Treino de Hoje</button></div>
     </div>
 
-    <!-- TREINO QUARTA -->
+    <!-- QUARTA -->
     <div id="quarta" class="workout-card">
         <h2>🦵 Quarta - Pernas e Glúteos <span class="calories-tag">🔥 Gasto: ~400 kcal</span></h2>
         <ul class="exercise-list">
@@ -523,6 +303,7 @@
                         </div>
                     </div>
                 </div>
+                <a href="https://www.youtube.com/results?search_query=agachamento+livre+com+barra" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
             <li class="exercise-item" id="q2" onclick="toggleExercise('q2', event)">
                 <div class="checkbox-container"><input type="checkbox"></div>
@@ -536,6 +317,7 @@
                         </div>
                     </div>
                 </div>
+                <a href="https://www.youtube.com/results?search_query=passada+com+halter" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
             <li class="exercise-item" id="q3" onclick="toggleExercise('q3', event)">
                 <div class="checkbox-container"><input type="checkbox"></div>
@@ -549,12 +331,27 @@
                         </div>
                     </div>
                 </div>
+                <a href="https://www.youtube.com/results?search_query=stiff+com+barra+execucao" target="_blank" class="video-btn">▶ Vídeo</a>
+            </li>
+            <li class="exercise-item" id="q4" onclick="toggleExercise('q4', event)">
+                <div class="checkbox-container"><input type="checkbox"></div>
+                <div class="exercise-details">
+                    <div class="exercise-name">Gêmeos em Pé (Panturrilhas)</div>
+                    <div class="exercise-meta">
+                        <span class="tag">4 Séries</span><span class="tag">20 Reps</span>
+                        <div class="weight-control">
+                            <input type="number" id="carga_q4" placeholder="--" onclick="event.stopPropagation()"><span>kg</span>
+                            <button class="save-weight-btn" onclick="saveWeight('q4', event)">Salvar</button>
+                        </div>
+                    </div>
+                </div>
+                <a href="https://www.youtube.com/results?search_query=panturrilha+em+pe+com+barra" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
         </ul>
         <div class="action-area"><button class="save-btn" onclick="saveProgressToday('Quarta')">☁️ Salvar Treino de Hoje</button></div>
     </div>
 
-    <!-- TREINO QUINTA -->
+    <!-- QUINTA -->
     <div id="quinta" class="workout-card">
         <h2>💪 Quinta - Costas e Bíceps <span class="calories-tag">🔥 Gasto: ~300 kcal</span></h2>
         <ul class="exercise-list">
@@ -570,6 +367,7 @@
                         </div>
                     </div>
                 </div>
+                <a href="https://www.youtube.com/results?search_query=remada+curvada+com+barra" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
             <li class="exercise-item" id="qui2" onclick="toggleExercise('qui2', event)">
                 <div class="checkbox-container"><input type="checkbox"></div>
@@ -583,6 +381,7 @@
                         </div>
                     </div>
                 </div>
+                <a href="https://www.youtube.com/results?search_query=remada+unilateral+serrote" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
             <li class="exercise-item" id="qui3" onclick="toggleExercise('qui3', event)">
                 <div class="checkbox-container"><input type="checkbox"></div>
@@ -596,12 +395,27 @@
                         </div>
                     </div>
                 </div>
+                <a href="https://www.youtube.com/results?search_query=rosca+direta+com+barra" target="_blank" class="video-btn">▶ Vídeo</a>
+            </li>
+            <li class="exercise-item" id="qui4" onclick="toggleExercise('qui4', event)">
+                <div class="checkbox-container"><input type="checkbox"></div>
+                <div class="exercise-details">
+                    <div class="exercise-name">Abdominal Supra Clássico</div>
+                    <div class="exercise-meta">
+                        <span class="tag">4 Séries</span><span class="tag">15 Reps</span>
+                        <div class="weight-control">
+                            <input type="number" id="carga_qui4" placeholder="--" onclick="event.stopPropagation()"><span>kg</span>
+                            <button class="save-weight-btn" onclick="saveWeight('qui4', event)">Salvar</button>
+                        </div>
+                    </div>
+                </div>
+                <a href="https://www.youtube.com/results?search_query=abdominal+supra+solo" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
         </ul>
         <div class="action-area"><button class="save-btn" onclick="saveProgressToday('Quinta')">☁️ Salvar Treino de Hoje</button></div>
     </div>
 
-    <!-- TREINO SEXTA -->
+    <!-- SEXTA -->
     <div id="sexta" class="workout-card">
         <h2>🔥 Sexta - Queima Calórica Completa <span class="calories-tag">🔥 Gasto: ~450 kcal</span></h2>
         <ul class="exercise-list">
@@ -617,6 +431,7 @@
                         </div>
                     </div>
                 </div>
+                <a href="https://www.youtube.com/results?search_query=levantamento+terra+barra" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
             <li class="exercise-item" id="s2" onclick="toggleExercise('s2', event)">
                 <div class="checkbox-container"><input type="checkbox"></div>
@@ -630,6 +445,7 @@
                         </div>
                     </div>
                 </div>
+                <a href="https://www.youtube.com/results?search_query=agachamento+goblet" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
             <li class="exercise-item" id="s3" onclick="toggleExercise('s3', event)">
                 <div class="checkbox-container"><input type="checkbox"></div>
@@ -643,12 +459,27 @@
                         </div>
                     </div>
                 </div>
+                <a href="https://www.youtube.com/results?search_query=thruster+com+halter" target="_blank" class="video-btn">▶ Vídeo</a>
+            </li>
+            <li class="exercise-item" id="s4" onclick="toggleExercise('s4', event)">
+                <div class="checkbox-container"><input type="checkbox"></div>
+                <div class="exercise-details">
+                    <div class="exercise-name">Prancha Isométrica</div>
+                    <div class="exercise-meta">
+                        <span class="tag">3 Vezes</span><span class="tag">45 a 60 seg</span>
+                        <div class="weight-control">
+                            <input type="number" id="carga_s4" placeholder="--" onclick="event.stopPropagation()"><span>kg</span>
+                            <button class="save-weight-btn" onclick="saveWeight('s4', event)">Salvar</button>
+                        </div>
+                    </div>
+                </div>
+                <a href="https://www.youtube.com/results?search_query=prancha+abdominal+isometria" target="_blank" class="video-btn">▶ Vídeo</a>
             </li>
         </ul>
         <div class="action-area"><button class="save-btn" onclick="saveProgressToday('Sexta')">☁️ Salvar Treino de Hoje</button></div>
     </div>
 
-    <!-- SEÇÃO RECEITAS -->
+    <!-- RECEITAS -->
     <div id="receitas" class="workout-card">
         <h2>🍽️ Minhas Receitas Fit</h2>
         <p style="color: var(--secondary); margin-top: 0;">Salve links e ideias de refeições para manter o foco na dieta.</p>
@@ -660,9 +491,20 @@
             <button class="save-btn" style="padding: 10px; font-size: 1em;" onclick="saveRecipe()">Salvar Receita</button>
         </div>
 
-        <div class="recipe-list" id="recipeListContainer">
-            <!-- As receitas aparecerão aqui via Supabase -->
+        <div class="recipe-list" id="recipeListContainer"></div>
+    </div>
+
+    <!-- CONQUISTAS -->
+    <div id="conquistasTab" class="workout-card">
+        <h2>🏆 Diário de Conquistas</h2>
+        <p style="color: var(--secondary); margin-top: 0;">Registre e celebre sua evolução, quebra de recordes e marcos pessoais!</p>
+        
+        <div class="recipe-form">
+            <input type="text" id="conquistaText" placeholder="Ex: Hoje consegui colocar mais 5kg no agachamento!">
+            <button class="save-btn" style="padding: 10px; font-size: 1em; background: #8b5cf6;" onclick="saveConquista()">Gravar Conquista</button>
         </div>
+
+        <div class="timeline" id="conquistasTimeline"></div>
     </div>
 
     <!-- DIÁRIO E CALENDÁRIO -->
@@ -675,9 +517,7 @@
             </div>
             <div class="status-cloud" id="syncStatus">🔄 Conectando...</div>
         </div>
-        <div class="calendar-info">
-            💡 <strong>Dica:</strong> Clique nos dias para registrar treinos antigos ou desmarcar.
-        </div>
+        <div class="calendar-info">💡 <strong>Dica:</strong> Clique nos dias para registrar treinos antigos ou desmarcar.</div>
         <div class="calendar-grid" id="calendarGrid"></div>
     </div>
 
@@ -693,15 +533,9 @@
 </div>
 
 <script>
-    // --- SUPABASE CONFIG ---
     const DB_URL = "https://znpeniqeagmeztwsuwbk.supabase.co/rest/v1"; 
     const PUBLIC_KEY = "sb_publishable_2VWFh2oe_n6xg9Xo_TIHIQ_W_CJPO0J"; 
-    const HEADERS = {
-        "apikey": PUBLIC_KEY,
-        "Authorization": `Bearer ${PUBLIC_KEY}`,
-        "Content-Type": "application/json",
-        "Prefer": "return=representation"
-    };
+    const HEADERS = { "apikey": PUBLIC_KEY, "Authorization": `Bearer ${PUBLIC_KEY}`, "Content-Type": "application/json", "Prefer": "return=representation" };
 
     // --- TEMPORIZADOR LÓGICA ---
     let timerInterval;
@@ -711,12 +545,9 @@
         try {
             const ctx = new (window.AudioContext || window.webkitAudioContext)();
             const osc = ctx.createOscillator();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(800, ctx.currentTime);
-            osc.connect(ctx.destination);
-            osc.start();
-            osc.stop(ctx.currentTime + 0.3); // Apita por 300ms
-        } catch(e) { console.log('Audio não suportado ou bloqueado no navegador.'); }
+            osc.type = 'sine'; osc.frequency.setValueAtTime(800, ctx.currentTime);
+            osc.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime + 0.3);
+        } catch(e) {}
     }
 
     function updateTimeDisplay(seconds) {
@@ -736,16 +567,12 @@
             updateTimeDisplay(remaining);
             if (remaining <= 0) {
                 clearInterval(timerInterval);
-                playBeep();
-                setTimeout(playBeep, 400); // Toca segundo beep rápido
+                playBeep(); setTimeout(playBeep, 400);
             }
         }, 1000);
     }
 
-    function stopTimer() {
-        clearInterval(timerInterval);
-        updateTimeDisplay(0);
-    }
+    function stopTimer() { clearInterval(timerInterval); updateTimeDisplay(0); }
 
     // --- LÓGICA DE CARGAS ---
     function fetchWeights() {
@@ -753,7 +580,6 @@
         .then(res => res.json())
         .then(data => {
             if(!Array.isArray(data)) return;
-            // Pega apenas a carga mais recente de cada exercício
             const loaded = {};
             data.forEach(item => {
                 if (!loaded[item.exercicio_id]) {
@@ -762,35 +588,23 @@
                     if(input) input.value = item.carga;
                 }
             });
-        }).catch(err => console.log('Erro ao buscar cargas. Tabela criada?', err));
+        }).catch(err => console.log('Erro cargas. Tabela OK?'));
     }
 
     function saveWeight(exercicioId, event) {
         event.stopPropagation();
         const input = document.getElementById(`carga_${exercicioId}`);
         const cargaVal = parseFloat(input.value);
-        
         if (isNaN(cargaVal)) { alert('Digite um número válido para a carga (peso).'); return; }
         
-        const btn = event.target;
-        const textOrig = btn.innerText;
-        btn.innerText = "...";
+        const btn = event.target; const textOrig = btn.innerText; btn.innerText = "...";
 
-        fetch(`${DB_URL}/historico_cargas`, {
-            method: "POST",
-            headers: HEADERS,
-            body: JSON.stringify({ exercicio_id: exercicioId, carga: cargaVal })
-        })
+        fetch(`${DB_URL}/historico_cargas`, { method: "POST", headers: HEADERS, body: JSON.stringify({ exercicio_id: exercicioId, carga: cargaVal }) })
         .then(res => {
-            if(!res.ok) throw new Error("Falha ao salvar");
-            btn.innerText = "Salvo!";
-            btn.style.background = "var(--success)";
+            if(!res.ok) throw new Error("Erro");
+            btn.innerText = "Salvo!"; btn.style.background = "var(--success)";
             setTimeout(() => { btn.innerText = textOrig; btn.style.background = "var(--primary)"; }, 2000);
-        })
-        .catch(err => {
-            btn.innerText = textOrig;
-            alert('Erro ao salvar. Verifique se a tabela "historico_cargas" foi criada no Supabase!');
-        });
+        }).catch(err => { btn.innerText = textOrig; alert('Erro ao salvar carga. Tabela "historico_cargas" criada?'); });
     }
 
     // --- LÓGICA DE RECEITAS ---
@@ -801,86 +615,93 @@
             if(!Array.isArray(data)) return;
             const container = document.getElementById('recipeListContainer');
             container.innerHTML = '';
-            
-            if(data.length === 0) {
-                container.innerHTML = '<p style="color: var(--secondary);">Nenhuma receita salva ainda. Adicione a sua primeira!</p>';
-                return;
-            }
-
+            if(data.length === 0) { container.innerHTML = '<p style="color: var(--secondary);">Nenhuma receita salva.</p>'; return; }
             data.forEach(item => {
                 container.innerHTML += `
                     <div class="recipe-card">
                         <h3>${item.titulo}</h3>
                         ${item.url_link ? `<a href="${item.url_link}" target="_blank">🔗 Acessar Receita</a>` : ''}
                         ${item.notas ? `<p>${item.notas}</p>` : ''}
-                    </div>
-                `;
+                    </div>`;
             });
-        }).catch(err => console.log('Erro ao buscar receitas. Tabela criada?', err));
+        }).catch(err => console.log('Erro receitas. Tabela OK?'));
     }
 
     function saveRecipe() {
         const titulo = document.getElementById('recipeTitle').value.trim();
         const url_link = document.getElementById('recipeLink').value.trim();
         const notas = document.getElementById('recipeNotes').value.trim();
+        if(!titulo) { alert("Nome da receita obrigatório!"); return; }
 
-        if(!titulo) { alert("O nome da receita é obrigatório!"); return; }
-
-        fetch(`${DB_URL}/receitas`, {
-            method: "POST",
-            headers: HEADERS,
-            body: JSON.stringify({ titulo, url_link, notas })
-        })
+        fetch(`${DB_URL}/receitas`, { method: "POST", headers: HEADERS, body: JSON.stringify({ titulo, url_link, notas }) })
         .then(res => {
             if(!res.ok) throw new Error("Erro");
-            document.getElementById('recipeTitle').value = '';
-            document.getElementById('recipeLink').value = '';
-            document.getElementById('recipeNotes').value = '';
-            fetchRecipes(); // Recarrega as receitas na tela
-        })
-        .catch(err => alert('Erro ao salvar a receita. Verifique se a tabela "receitas" foi criada.'));
+            document.getElementById('recipeTitle').value = ''; document.getElementById('recipeLink').value = ''; document.getElementById('recipeNotes').value = '';
+            fetchRecipes();
+        }).catch(err => alert('Erro salvar receita. Tabela "receitas" criada?'));
     }
 
-    // --- LÓGICA DAS ABAS E CALENDÁRIO ---
+    // --- LÓGICA DE CONQUISTAS ---
+    function fetchConquistas() {
+        fetch(`${DB_URL}/conquistas?select=*&order=created_at.desc`, { headers: HEADERS })
+        .then(res => res.json())
+        .then(data => {
+            if(!Array.isArray(data)) return;
+            const container = document.getElementById('conquistasTimeline');
+            container.innerHTML = '';
+            if(data.length === 0) { container.innerHTML = '<p style="color: var(--secondary); margin-left: 20px;">Nenhuma conquista registrada ainda. Comece hoje mesmo!</p>'; return; }
+
+            data.forEach(item => {
+                const dataFormatada = new Date(item.created_at).toLocaleDateString('pt-BR');
+                container.innerHTML += `
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <span class="timeline-date">${dataFormatada}</span>
+                            <p class="timeline-text">${item.texto_conquista}</p>
+                        </div>
+                    </div>`;
+            });
+        }).catch(err => console.log('Erro conquistas. Tabela OK?'));
+    }
+
+    function saveConquista() {
+        const texto = document.getElementById('conquistaText').value.trim();
+        if(!texto) { alert("Escreva a sua conquista antes de salvar!"); return; }
+
+        fetch(`${DB_URL}/conquistas`, { method: "POST", headers: HEADERS, body: JSON.stringify({ texto_conquista: texto }) })
+        .then(res => {
+            if(!res.ok) throw new Error("Erro");
+            document.getElementById('conquistaText').value = '';
+            fetchConquistas();
+        }).catch(err => alert('Erro ao salvar a conquista. Tabela "conquistas" criada?'));
+    }
+
+    // --- ABAS E CALENDÁRIO ---
     let currentCalendarDate = new Date();
     let cacheTrainedDays = [];
 
     function switchDay(dayId, buttonElement) {
         document.querySelectorAll('.workout-card').forEach(card => card.style.display = 'none');
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        
         const targetCard = document.getElementById(dayId);
         if (targetCard) targetCard.style.display = 'block';
         if (buttonElement) buttonElement.classList.add('active');
-        
-        // Esconder barra de progresso na aba de receitas
-        document.getElementById('progBarContainer').style.display = dayId === 'receitas' ? 'none' : 'block';
-        
+        document.getElementById('progBarContainer').style.display = (dayId === 'receitas' || dayId === 'conquistasTab') ? 'none' : 'block';
         updateProgressBar(dayId);
     }
 
     function toggleExercise(id, event) {
-        // Se clicar nos inputs de carga ou botões, não marca o exercício como completo
         if (event && (event.target.tagName === 'A' || event.target.tagName === 'INPUT' || event.target.tagName === 'BUTTON')) return; 
-
-        const item = document.getElementById(id);
-        if(!item) return;
-        
+        const item = document.getElementById(id); if(!item) return;
         const checkbox = item.querySelector('input[type="checkbox"]');
-        if (event && event.target.type !== 'checkbox') {
-            checkbox.checked = !checkbox.checked;
-        }
-        
-        if (checkbox.checked) item.classList.add('completed');
-        else item.classList.remove('completed');
-        
+        if (event && event.target.type !== 'checkbox') checkbox.checked = !checkbox.checked;
+        if (checkbox.checked) item.classList.add('completed'); else item.classList.remove('completed');
         updateProgressBar(item.closest('.workout-card').id);
     }
 
     function updateProgressBar(dayId) {
-        if(dayId === 'receitas') return;
-        const card = document.getElementById(dayId);
-        if(!card) return;
+        if(dayId === 'receitas' || dayId === 'conquistasTab') return;
+        const card = document.getElementById(dayId); if(!card) return;
         const total = card.querySelectorAll('.exercise-item').length;
         const checked = card.querySelectorAll('input[type="checkbox"]:checked').length;
         document.getElementById('progressBar').style.width = total > 0 ? (checked / total) * 100 + '%' : '0%';
@@ -889,16 +710,13 @@
     function fetchTrainedDays() {
         const statusEl = document.getElementById('syncStatus');
         if (statusEl) statusEl.innerText = "🔄 Sincronizando...";
-
         fetch(`${DB_URL}/treinos_concluidos?select=data_treino`, { method: "GET", headers: HEADERS })
         .then(res => { if(!res.ok) throw new Error("Erro"); return res.json(); })
         .then(data => {
             cacheTrainedDays = data.map(item => item.data_treino);
             if (statusEl) statusEl.innerText = "🟢 Nuvem Ativa";
-            renderCalendar();
-            updateStats();
-        })
-        .catch(err => { if (statusEl) statusEl.innerText = "⚠️ Off-line"; renderCalendar(); });
+            renderCalendar(); updateStats();
+        }).catch(err => { if (statusEl) statusEl.innerText = "⚠️ Off-line"; renderCalendar(); });
     }
 
     function saveProgressToday() {
@@ -912,14 +730,12 @@
         if (isInserting) {
             if (cacheTrainedDays.includes(dateStr)) { alert("Data já registrada!"); return; }
             if (statusEl) statusEl.innerText = "📤 Salvando...";
-
             fetch(`${DB_URL}/treinos_concluidos`, { method: "POST", headers: HEADERS, body: JSON.stringify({ data_treino: dateStr }) })
             .then(res => { if(!res.ok) throw new Error("Erro"); fetchTrainedDays(); })
             .catch(err => { alert("Erro ao salvar!"); fetchTrainedDays(); });
         } else {
             if (!confirm(`Deseja remover o treino do dia ${dateStr.split('-').reverse().join('/')}?`)) return;
             if (statusEl) statusEl.innerText = "🗑️ Removendo...";
-
             fetch(`${DB_URL}/treinos_concluidos?data_treino=eq.${dateStr}`, { method: "DELETE", headers: HEADERS })
             .then(res => { if(!res.ok) throw new Error("Erro"); fetchTrainedDays(); })
             .catch(err => { alert("Erro ao deletar!"); fetchTrainedDays(); });
@@ -927,24 +743,17 @@
     }
 
     function handleDayClick(dayNumber) {
-        const year = currentCalendarDate.getFullYear();
-        const month = currentCalendarDate.getMonth();
+        const year = currentCalendarDate.getFullYear(); const month = currentCalendarDate.getMonth();
         const dateStr = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(dayNumber).padStart(2, '0');
-        const isTrained = cacheTrainedDays.includes(dateStr);
-        executeToggleDate(dateStr, !isTrained);
+        executeToggleDate(dateStr, !cacheTrainedDays.includes(dateStr));
     }
 
-    function changeMonth(direction) {
-        currentCalendarDate.setMonth(currentCalendarDate.getMonth() + direction);
-        renderCalendar();
-    }
+    function changeMonth(direction) { currentCalendarDate.setMonth(currentCalendarDate.getMonth() + direction); renderCalendar(); }
 
     function renderCalendar() {
-        const grid = document.getElementById('calendarGrid');
-        if (!grid) return;
+        const grid = document.getElementById('calendarGrid'); if (!grid) return;
         grid.innerHTML = '';
-        const year = currentCalendarDate.getFullYear();
-        const month = currentCalendarDate.getMonth();
+        const year = currentCalendarDate.getFullYear(); const month = currentCalendarDate.getMonth();
         const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
         document.getElementById('monthDisplay').innerText = `${monthNames[month]} ${year}`;
 
@@ -952,22 +761,17 @@
             const el = document.createElement('div'); el.className = 'calendar-day-name'; el.innerText = day; grid.appendChild(el);
         });
 
-        const firstDay = new Date(year, month, 1).getDay();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const firstDay = new Date(year, month, 1).getDay(); const daysInMonth = new Date(year, month + 1, 0).getDate();
         const realTodayStr = new Date().toISOString().split('T')[0];
 
         for (let i = 0; i < firstDay; i++) grid.appendChild(document.createElement('div'));
 
         for (let day = 1; day <= daysInMonth; day++) {
-            const dayCell = document.createElement('div');
-            dayCell.className = 'calendar-day active-month';
-            dayCell.innerText = day;
+            const dayCell = document.createElement('div'); dayCell.className = 'calendar-day active-month'; dayCell.innerText = day;
             const dateKey = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-
             if (cacheTrainedDays.includes(dateKey)) { dayCell.classList.add('trained'); dayCell.innerText = day + " 🔥"; }
             if (dateKey === realTodayStr) dayCell.classList.add('today');
-            dayCell.setAttribute("onclick", `handleDayClick(${day})`);
-            grid.appendChild(dayCell);
+            dayCell.setAttribute("onclick", `handleDayClick(${day})`); grid.appendChild(dayCell);
         }
     }
 
@@ -976,18 +780,12 @@
         document.getElementById('treinosMesCount').innerText = cacheTrainedDays.filter(d => d.startsWith(prefix)).length;
     }
 
-    // INICIALIZAÇÃO
     window.onload = function() {
-        renderCalendar();
-        fetchTrainedDays();
-        fetchWeights();
-        fetchRecipes();
+        renderCalendar(); fetchTrainedDays(); fetchWeights(); fetchRecipes(); fetchConquistas();
     };
 
     // --- PWA INIT ---
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
-    }
+    if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js')); }
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault(); deferredPrompt = e; document.getElementById('installBtn').style.display = 'block';
