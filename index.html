@@ -769,10 +769,11 @@
     function closeSwapModal() { document.getElementById('swapModal').classList.remove('active'); currentSwapSlotId = null; }
 
     function applySwap(nome, series, reps, yt) {
+        const slotId = currentSwapSlotId;
         closeSwapModal();
         const payload = JSON.stringify({ tipo: "troca", nome, series, reps, yt });
-        savePreferenceToDB(currentSwapSlotId, payload);
-        renderSwap(currentSwapSlotId, { nome, series, reps, yt });
+        savePreferenceToDB(slotId, payload);
+        renderSwap(slotId, { nome, series, reps, yt });
     }
 
     function renderSwap(slotId, ex) {
