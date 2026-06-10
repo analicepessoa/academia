@@ -1,4 +1,4 @@
-const CACHE_NAME = 'treino-v1';
+const CACHE_NAME = 'treino-v2';
 const urlsToCache = [
   './index.html',
   './manifest.json',
@@ -13,6 +13,23 @@ self.addEventListener('install', event => {
         return cache.addAll(urlsToCache);
       })
   );
+  self.skipWaiting();
+});
+
+// Ativação: Limpar caches antigos
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+  self.clients.claim();
 });
 
 // Interceptando requisições para funcionar offline
